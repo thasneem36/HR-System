@@ -20,6 +20,8 @@ function App() {
                 <Route path="/manual-attendance" element={<ManualAttendance />} />
                 <Route path="/ReportsAnalyticsPage" element={<ReportsAnalyticsPage />} />
                 <Route path="/LeaveManagement" element={<LeaveManagement />} />
+
+
             </Routes>
         </BrowserRouter>
     );
