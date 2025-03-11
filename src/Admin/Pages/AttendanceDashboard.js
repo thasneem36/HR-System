@@ -21,7 +21,24 @@ function AttendanceDashboard() {
                     </ul>
                 </nav>
             </header>
-            <main>
+            <main className="container-table">
+                <div className="row">
+                    <table>
+                        <th>
+                            <td>ID</td>
+                            <td>Name</td>
+                            <td>123</td>
+                        </th>
+                        <tr>
+                            <td>1</td>
+                            <td>mt</td>
+                            <td>1</td>
+                            
+                        </tr>
+                    </table>
+                </div>
+                <div className="row"></div>
+                <div className="row"></div>
             </main>
         </div>
     );
