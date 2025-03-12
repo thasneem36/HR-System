@@ -2,12 +2,14 @@ import { useState } from "react";
 import ManageUserAccounts from "./ManageUserAccounts";
 import AccessControl from "./AccessControl";
 import SecuritySettings from "./SecuritySettings";
+import Header from "../navBar/Header";
 
 const UserRolesPage = () => {
   const [activeTab, setActiveTab] = useState("manage");
 
   return (
     <div className="p-6">
+      <Header/>
       <h2 className="text-xl font-semibold mb-4">User Roles & Permissions Page</h2>
 
       {/* Tabs */}

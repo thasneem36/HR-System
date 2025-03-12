@@ -5,12 +5,14 @@ import PerformanceReports from "./PerformanceReports";
 import ExportButtons from "./ExportButtons";
 import { Dropdown, Button } from "antd";
 import './Style.css'
+import Header from "../navBar/Header";
 
 const ReportsAnalyticsPage = () => {
   const [selectedReport, setSelectedReport] = useState("attendance");
 
   return (
     <div style={{ padding: "20px" }} className="box">
+      <Header/>
       <h1>Reports & Analytics</h1>
       <Dropdown
         menu={{

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Header from "../navBar/Header";
 
 const ManageUserAccounts = () => {
   const users = [
@@ -16,6 +17,7 @@ const ManageUserAccounts = () => {
 
   return (
     <div>
+      <Header/>
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-200">
