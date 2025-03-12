@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-// import './LeaveManagement.css';
 import '../Components/LeaveManagement.css';
+import Header from "../navBar/Header";
 
 function LeaveManagement() {
   const fetchDataFromDatabase = () => {
@@ -68,7 +68,11 @@ function LeaveManagement() {
   };
 
   return (
+    <>
+     <Header/>
+     
     <div className="leave-management">
+     
       {/* Title */}
       <h1>Leave Management System</h1>
 
@@ -204,6 +208,7 @@ function LeaveManagement() {
         )}
       </div>
     </div>
+    </>
   );
 }
 

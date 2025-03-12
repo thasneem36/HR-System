@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./Attendance.css";
 import { Link } from "react-router-dom";
+import Header from "../navBar/Header";
+
 
 function ManualAttendance() {
     // State to store form data
@@ -28,6 +30,7 @@ function ManualAttendance() {
 
     return (
         <div className="AMPdashboard">
+            <Header />
                     <h2>Manual Attendance Entry</h2>
             <header className="attendanceHeader">
                 <nav>

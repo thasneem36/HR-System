@@ -1,5 +1,6 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import Header from "../navBar/Header";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -19,6 +20,7 @@ const attendanceData = {
 const AttendanceReports = () => {
   return (
     <div>
+      <Header />
       <h2>Monthly Attendance Trends</h2>
       <Line data={attendanceData} />
     </div>

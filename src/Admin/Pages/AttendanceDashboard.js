@@ -2,9 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../Components/Attendance.css";
 
+import Header from "../navBar/Header";
+
 function AttendanceDashboard() {
     return (
         <div className="AMPdashboard">
+        <Header />
             <h1>Attendance Dashboard</h1>
             <header className="attendanceHeader">
                 <nav>
@@ -21,7 +24,24 @@ function AttendanceDashboard() {
                     </ul>
                 </nav>
             </header>
-            <main>
+            <main className="container-table">
+                <div className="row">
+                    <table>
+                        <th>
+                            <td>ID</td>
+                            <td>Name</td>
+                            <td>123</td>
+                        </th>
+                        <tr>
+                            <td>1</td>
+                            <td>mt</td>
+                            <td>1</td>
+                            
+                        </tr>
+                    </table>
+                </div>
+                <div className="row"></div>
+                <div className="row"></div>
             </main>
         </div>
     );
