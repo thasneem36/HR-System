@@ -13,9 +13,11 @@ function App() {
     return (
         // <UserRolesPage />
         <BrowserRouter>
-            <Header />
+            {/* <Login /> */}
+            {/* <Header /> */}
             <Routes>
-                <Route path="/" element={<AttendanceDashboard />} />
+                <Route path="/" element={<Login />} />
+                {/* <Route path="/" element={<AttendanceDashboard />} /> */}
                 <Route path="/attendance-dashboard" element={<AttendanceDashboard />} />
                 <Route path="/attendance-records" element={<AttendanceRecords />} />
                 <Route path="/manual-attendance" element={<ManualAttendance />} />

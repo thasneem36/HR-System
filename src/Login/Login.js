@@ -17,10 +17,10 @@ const Login = ({ onLogin }) => {
         }
 
         // Simulate login validation (replace with actual API call)
-        if (username === "admin" && password === "password") {
+        if (username === "admin" && password === "123") {
             setError("");
             onLogin(); // Notify App component of successful login
-            navigate("/"); // Redirect to home page
+            navigate("../Admin/navBar/Header"); // Redirect to home page
         } else {
             setError("Invalid username or password.");
         }
