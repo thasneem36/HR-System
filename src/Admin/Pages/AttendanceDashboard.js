@@ -2,9 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../Components/Attendance.css";
 
+import Header from "../navBar/Header";
+
 function AttendanceDashboard() {
     return (
         <div className="AMPdashboard">
+        <Header />
             <h1>Attendance Dashboard</h1>
             <header className="attendanceHeader">
                 <nav>

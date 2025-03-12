@@ -1,62 +1,55 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import './Login.css';
 
-const Login = ({ onLogin }) => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
+const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  const handleLogin = (e) => {
+    e.preventDefault();
 
-        if (!username || !password) {
-            setError("Please enter both username and password.");
-            return;
-        }
+    // Basic validation
+    if (username === "admin" && password === "123") {
+      // Save login state (e.g., in localStorage or context)
+      localStorage.setItem("isLoggedIn", "true");
 
-        // Simulate login validation (replace with actual API call)
-        if (username === "admin" && password === "123") {
-            setError("");
-            onLogin(); // Notify App component of successful login
-            navigate("../Admin/navBar/Header"); // Redirect to home page
-        } else {
-            setError("Invalid username or password.");
-        }
-    };
+      // Redirect to the Leave Management page
+      navigate("/AdminDashborad");
+    } else {
+      setError("Invalid username or password");
+    }
+  };
 
-    return (
-        <div className="login-container">
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder="Enter your username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Enter your password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                {error && <p className="error-message">{error}</p>}
-                <button type="submit" className="login-button">
-                    Login
-                </button>
-            </form>
+  return (
+    <div className="login-container">
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <div className="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
-    );
+        <div className="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        {error && <p className="error">{error}</p>}
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  );
 };
 
 export default Login;

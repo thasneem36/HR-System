@@ -14,11 +14,11 @@ function Header() {
                 <div className="navLinks">
                     <ul>
                         <li>
-                            <Link>Dashboard</Link>
+                            <Link to="/AdminDashborad">Dashboard</Link>
                         </li>
                         <li>Manage Employees</li>
                         <li>
-                            <Link to="/attendance-dashboard">Attendance Management</Link>
+                            <Link to="/AttendanceDashboard">Attendance Management</Link>
                         </li>
                         <li><Link to="/LeaveManagement">Leave Management</Link></li>
                         <li>Payroll Management</li>
@@ -30,7 +30,7 @@ function Header() {
                     </ul>
                 </div>
                 <div className="logout">
-                    <a>Logout</a>
+                    <a ><Link to="/Login">Logout</Link></a>
                 </div>
             </nav>
         </header>
