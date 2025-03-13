@@ -16,7 +16,8 @@ function Header() {
                         <li>
                             <Link to="/AdminDashborad">Dashboard</Link>
                         </li>
-                        <li>Manage Employees</li>
+                        <li>
+                            <Link to="/ManageEmployees">Manage Employees</Link></li>
                         <li>
                             <Link to="/AttendanceDashboard">Attendance Management</Link>
                         </li>
