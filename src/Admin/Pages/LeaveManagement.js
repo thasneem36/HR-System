@@ -78,10 +78,12 @@ function LeaveManagement() {
 
       {/* Navbar */}
       <nav className="navbar">
-        <ul>
-          <li><button className="active" onClick={() => setActivePage("dashboard")}>Leave Dashboard</button></li>
-          <li><button onClick={() => setActivePage("leaveRequests")}>Leave Request List</button></li>
-          <li><button onClick={() => setActivePage("leaveBalance")}>Leave Balance</button></li>
+        <ul className="nav-buttons">
+          <li>
+            <button  className="active" onClick={() => setActivePage("dashboard")}>Leave Dashboard</button>
+            <button onClick={() => setActivePage("leaveRequests")}>Leave Request List</button>
+            <button onClick={() => setActivePage("leaveBalance")}>Leave Balance</button>
+          </li>
         </ul>
       </nav>
 
