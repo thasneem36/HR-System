@@ -208,7 +208,7 @@ function AdminDashboard() {
             title="Absent Today" 
             value={metrics.totalEmployees - metrics.presentToday}
             color="bg-red-500"
-          />
+          /><br/>
           <MetricCard 
             icon={Calendar} 
             title="Pending Leaves" 

@@ -27,7 +27,7 @@ function Header() {
                         <li>
                             <Link to="/ReportsAnalyticsPage">Reports & Analytics</Link>
                         </li>
-                        <li><Link to="/Settings">Settings</Link></li>
+                        <li><Link to="/">Settings</Link></li>
                     </ul>
                 </div>
                 <div className="logout">
