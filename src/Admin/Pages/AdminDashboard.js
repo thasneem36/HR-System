@@ -1,21 +1,31 @@
-import React from "react";
-import { Users, Calendar, UserCheck, UserX, BarChart3, PieChart } from "lucide-react";
-import Header from "../navBar/Header";
-import "../Components/Css/AdminDashboard.css";
+import React from 'react';
+import { 
+  Users, 
+  UserCheck, 
+  Calendar, 
+  DollarSign, 
+  Activity, 
+  Wifi, 
+  BarChart3, 
+  PieChart, 
+  UserX  
+} from 'lucide-react';
+import Header from '../navBar/Header';
+import '../Components/Css/AdminDashboard.css';
 
 // Mock data for demonstration
 const metrics = {
   totalEmployees: 156,
   presentToday: 142,
-  absentToday: 14,
   pendingLeaves: 8,
+  PayrollSummary: 145000
 };
 
 const recentActivities = [
-  { user: "John Doe", action: "Clocked in", time: "2 minutes ago" },
+  { user: "John Doe", action: "Logged in", time: "2 minutes ago" },
   { user: "Jane Smith", action: "Updated profile", time: "15 minutes ago" },
   { user: "Mike Johnson", action: "Requested leave", time: "1 hour ago" },
-  { user: "Sarah Wilson", action: "Clocked out", time: "2 hours ago" },
+  { user: "Sarah Wilson", action: "Clocked in", time: "2 hours ago" },
 ];
 
 function MetricCard({ icon: Icon, title, value, color }) {
@@ -34,42 +44,48 @@ function MetricCard({ icon: Icon, title, value, color }) {
   );
 }
 
-function AttendanceDashboard() {
+function AdminDashboard() {
   return (
     <div className="dashboard-container">
       <Header />
-
+      
       {/* Main Content */}
       <div className="dashboard-content">
         <div className="dashboard-header">
-          <h1 className="dashboard-title">Attendance Dashboard</h1>
+          <h1 className="dashboard-title">Admin Dashboard</h1>
         </div>
 
         {/* Metrics Grid */}
         <div className="metrics-grid">
-          <MetricCard
-            icon={Users}
-            title="Total Employees"
+          <MetricCard 
+            icon={Users} 
+            title="Total Employees" 
             value={metrics.totalEmployees}
             color="bg-blue-500"
           />
-          <MetricCard
-            icon={UserCheck}
-            title="Present Today"
+          <MetricCard 
+            icon={UserCheck} 
+            title="Present Today" 
             value={metrics.presentToday}
             color="bg-green-500"
           />
-          <MetricCard
-            icon={UserX}
-            title="Absent Today"
-            value={metrics.absentToday}
-            color="bg-red-500"
-          />
-          <MetricCard
-            icon={Calendar}
-            title="Pending Leaves"
+          <MetricCard 
+            icon={UserX} 
+            title="Absent Today" 
+            value={metrics.presentToday}
+            color="bg-green-500"
+          /><br/>
+          <MetricCard 
+            icon={Calendar} 
+            title="Pending Leaves" 
             value={metrics.pendingLeaves}
             color="bg-yellow-500"
+          />
+          <MetricCard 
+            icon={DollarSign} 
+            title="Payroll Summary" 
+            value={`$${metrics.PayrollSummary}`}
+            color="bg-purple-500"
           />
         </div>
 
@@ -91,7 +107,7 @@ function AttendanceDashboard() {
             </div>
           </div>
 
-          {/* Leave Trend Chart */}
+          {/* Leave Trend Chart (New Feature) */}
           <div className="chart-container">
             <div className="chart-header">
               <h2 className="chart-title">Leave Trends</h2>
@@ -114,7 +130,7 @@ function AttendanceDashboard() {
               {recentActivities.map((activity, index) => (
                 <div key={index} className="activity-item">
                   <div className="activity-icon">
-                    <BarChart3 className="w-4 h-4 text-gray-600" />
+                    <Activity className="w-4 h-4 text-gray-600" />
                   </div>
                   <div>
                     <p className="activity-user">{activity.user}</p>
@@ -132,13 +148,13 @@ function AttendanceDashboard() {
           <div className="status-grid">
             <div className="status-item">
               <div className="status-icon">
-                <PieChart className="w-4 h-4 text-green-600" />
+                <Wifi className="w-4 h-4 text-green-600" />
               </div>
               <span className="status-text">All systems operational</span>
             </div>
             <div className="status-item">
               <div className="status-icon">
-                <UserCheck className="w-4 h-4 text-green-600" />
+                <Activity className="w-4 h-4 text-green-600" />
               </div>
               <span className="status-text">Biometric devices connected (4/4)</span>
             </div>
@@ -149,4 +165,4 @@ function AttendanceDashboard() {
   );
 }
 
-export default AttendanceDashboard;
+export default AdminDashboard;
