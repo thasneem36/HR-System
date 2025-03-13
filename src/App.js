@@ -25,7 +25,7 @@ function App() {
       <Routes>
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/Admindashboard" element={<AdminDashboard />} />
+          <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/AttendanceDashboard" element={<AttendanceDashboard />} />
           <Route path="/attendance-records" element={<AttendanceRecords />} />
           <Route path="/manual-attendance" element={<ManualAttendance />} />
