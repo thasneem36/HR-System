@@ -90,18 +90,23 @@ const ManageEmployees = () => {
 
     if (viewMode === "add") {
         return (
-            <div className="add-employee-container">
-                <h2>Add Employee</h2>
-                <input type="text" placeholder="Name" value={newEmployee.name} onChange={(e) => setNewEmployee({ ...newEmployee, name: e.target.value })} />
-                <input type="text" placeholder="Department" value={newEmployee.department} onChange={(e) => setNewEmployee({ ...newEmployee, department: e.target.value })} />
-                <input type="text" placeholder="Job Title" value={newEmployee.jobTitle} onChange={(e) => setNewEmployee({ ...newEmployee, jobTitle: e.target.value })} />
-                <select value={newEmployee.role} onChange={(e) => setNewEmployee({ ...newEmployee, role: e.target.value })}>
-                    <option value="HR">HR</option>
-                    <option value="RM">RM</option>
-                    <option value="Staff">Staff</option>
-                </select>
-                <button onClick={handleAddEmployee}>Add</button>
-                <button onClick={() => setViewMode("list")}>Back</button>
+            <div>
+                <Header />
+                <div className="add-employee-container">
+                    <h2>Add Employee</h2>
+                    <div className="addFromelement">
+                    <input type="text" placeholder="Name" value={newEmployee.name} onChange={(e) => setNewEmployee({ ...newEmployee, name: e.target.value })} />
+                    <input type="text" placeholder="Department" value={newEmployee.department} onChange={(e) => setNewEmployee({ ...newEmployee, department: e.target.value })} />
+                    <input type="text" placeholder="Job Title" value={newEmployee.jobTitle} onChange={(e) => setNewEmployee({ ...newEmployee, jobTitle: e.target.value })} />
+                    <select value={newEmployee.role} onChange={(e) => setNewEmployee({ ...newEmployee, role: e.target.value })}>
+                        <option value="HR">HR</option>
+                        <option value="RM">RM</option>
+                        <option value="Staff">Staff</option>
+                    </select>
+                    <button onClick={handleAddEmployee}>Add</button>
+                    <button onClick={() => setViewMode("list")}>Back</button>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -112,8 +117,10 @@ const ManageEmployees = () => {
             <div className="manage-employees-container">
             <h2>Manage Employees</h2>
             <div className="employee-actions">
+                <div>
                 <input type="text" placeholder="Search..." />
                 <button>Search</button>
+                </div>
                 <button onClick={() => setViewMode("add")}>Add</button>
             </div>
             <table className="employee-table">
@@ -138,12 +145,14 @@ const ManageEmployees = () => {
                             <td>{emp.role}</td>
                             <td className={emp.status === "Active" ? "status-active" : "status-deactivated"}>{emp.status}</td>
                             <td>
+                                <div className="actionbtn">
                                 <button onClick={() => handleEdit(emp)}>Edit</button>
                                 <button onClick={() => handleDelete(emp.id)}>Delete</button>
                                 <button onClick={() => handleView(emp)}>View</button>
                                 <button onClick={() => handleToggleStatus(emp.id)}>
                                     {emp.status === "Active" ? "Deactivate" : "Activate"}
                                 </button>
+                                </div>
                             </td>
                         </tr>
                     ))}
