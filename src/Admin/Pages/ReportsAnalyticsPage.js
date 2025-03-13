@@ -4,15 +4,15 @@ import LeaveReports from "../Components/LeaveReports";
 import PerformanceReports from "../Components/PerformanceReports";
 import ExportButtons from "../Components/ExportButtons";
 import { Dropdown, Button } from "antd";
-import '../Components/Report.css'
+import '../Components/Style.css';
 import Header from "../navBar/Header";
 
 const ReportsAnalyticsPage = () => {
   const [selectedReport, setSelectedReport] = useState("attendance");
 
   return (
-    <div style={{ padding: "20px" }} className="box">
-      <Header/>
+    <div className="box">
+      <Header />
       <h1>Reports & Analytics</h1>
       <Dropdown
         menu={{
@@ -24,14 +24,14 @@ const ReportsAnalyticsPage = () => {
           onClick: (e) => setSelectedReport(e.key),
         }}
       >
-        <Button>Select Report Type</Button>
+        <Button style={{width:"20%"}}>Select Report Type</Button>
       </Dropdown>
 
       {selectedReport === "attendance" && <AttendanceReports />}
       {selectedReport === "leave" && <LeaveReports />}
       {selectedReport === "performance" && <PerformanceReports />}
 
-      <ExportButtons />
+     
     </div>
   );
 };

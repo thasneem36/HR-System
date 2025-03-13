@@ -8,7 +8,7 @@ import AttendanceRecords from "./Admin/Components/AttendanceRecords";
 import ManualAttendance from "./Admin/Components/ManualAttendance";
 import ReportsAnalyticsPage from "./Admin/Pages/ReportsAnalyticsPage";
 import LeaveManagement from "./Admin/Pages/LeaveManagement";
-import UserRolesPage from "./Admin/Pages/UserRolesPermissions";
+import UserRolesPage from "./Admin/Pages/UserRolesPage";
 import ManageEmployees from "./Admin/Pages/ManageEmployees";
 import Login from "./Login/Login";
 import ProtectedRoute from "./Admin/Components/ProtectedRoute/ProtectedRoute";
