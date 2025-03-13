@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Login.css';
 
-const Login = () => {
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -13,12 +13,16 @@ const Login = () => {
 
     // Basic validation
     if (username === "admin" && password === "123") {
-      // Save login state (e.g., in localStorage or context)
-      localStorage.setItem("isLoggedIn", "true");
-
-      // Redirect to the Leave Management page
-      navigate("/AdminDashborad");
-    } else {
+      localStorage.setItem("isAuthenticated", "true"); 
+      navigate("/AdminDashboard");
+    } else if (username === "rm" && password === "123"){
+      localStorage.setItem("isAuthenticated", "true"); 
+      navigate("/RMpage");
+    } else if (username === "staf" && password === "123"){
+      localStorage.setItem("isAuthenticated", "true"); 
+      navigate("/StafPage");
+    }
+    else {
       setError("Invalid username or password");
     }
   };
@@ -26,10 +30,11 @@ const Login = () => {
   return (
     <div className="login-container">
       <h1>Login</h1>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} aria-label="Login Form">
         <div className="form-group">
-          <label>Username</label>
+          <label htmlFor="username">Username</label>
           <input
+            id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -37,8 +42,9 @@ const Login = () => {
           />
         </div>
         <div className="form-group">
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -50,6 +56,6 @@ const Login = () => {
       </form>
     </div>
   );
-};
+}
 
 export default Login;

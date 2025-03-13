@@ -2,11 +2,9 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
-  // If user is logged in, render the child routes (e.g., Dashboard)
-  // Otherwise, redirect to the login page
-  return isLoggedIn ? <Outlet /> : <Navigate to="/Login" />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/Login" replace />;
 };
 
 export default ProtectedRoute;
