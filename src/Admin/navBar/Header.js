@@ -14,7 +14,7 @@ function Header() {
                 <div className="navLinks">
                     <ul>
                         <li>
-                            <Link to="/AdminDashborad">Dashboard</Link>
+                            <Link to="/AdminDashboard">Dashboard</Link>
                         </li>
                         <li>
                             <Link to="/ManageEmployees">Manage Employees</Link></li>
