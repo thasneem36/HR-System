@@ -251,3 +251,20 @@
 .status-item:hover .status-text {
     color: #007bff;
 }
+
+
+/* Update the chart container background color */
+.chart-placeholder {
+    background-color: white; /* Set the background color to white */
+  }
+  
+  /* Optionally, if you want to make sure the chart's background color is also white */
+  .chart-container .chart-header {
+    background-color: white;
+  }
+  
+  /* Ensure charts don't have default backgrounds */
+  .chartjs-render-monitor {
+    background-color: white !important;
+  }
+  

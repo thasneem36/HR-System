@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Users, 
   UserCheck, 
@@ -12,6 +12,19 @@ import {
 } from 'lucide-react';
 import Header from '../navBar/Header';
 import '../Components/Css/AdminDashboard.css';
+import { Bar, Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
 
 // Mock data for demonstration
 const metrics = {
@@ -45,6 +58,127 @@ function MetricCard({ icon: Icon, title, value, color }) {
 }
 
 function AdminDashboard() {
+  const [attendanceFilter, setAttendanceFilter] = useState('Last 7 days');
+  const [leaveFilter, setLeaveFilter] = useState('Last 7 days');
+
+  // Example data for Attendance Chart
+  const getAttendanceData = (filter) => {
+    switch (filter) {
+      case 'Last 7 days':
+        return {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [
+            {
+              label: 'Present',
+              data: [120, 130, 125, 140, 135, 110, 100],
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            },
+            {
+              label: 'Absent',
+              data: [10, 15, 20, 10, 5, 25, 30],
+              backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            },
+          ],
+        };
+      case 'Last 30 days':
+        return {
+          labels: Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`),
+          datasets: [
+            {
+              label: 'Present',
+              data: Array.from({ length: 30 }, () => Math.floor(Math.random() * 150)),
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            },
+            {
+              label: 'Absent',
+              data: Array.from({ length: 30 }, () => Math.floor(Math.random() * 30)),
+              backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            },
+          ],
+        };
+      case 'Last 90 days':
+        return {
+          labels: Array.from({ length: 90 }, (_, i) => `Day ${i + 1}`),
+          datasets: [
+            {
+              label: 'Present',
+              data: Array.from({ length: 90 }, () => Math.floor(Math.random() * 150)),
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            },
+            {
+              label: 'Absent',
+              data: Array.from({ length: 90 }, () => Math.floor(Math.random() * 30)),
+              backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            },
+          ],
+        };
+      default:
+        return {
+          labels: [],
+          datasets: [],
+        };
+    }
+  };
+
+  // Example data for Leave Trend Chart
+  const getLeaveData = (filter) => {
+    switch (filter) {
+      case 'Last 7 days':
+        return {
+          labels: ['Approved', 'Pending', 'Rejected'],
+          datasets: [
+            {
+              label: 'Leaves',
+              data: [20, 8, 5],
+              backgroundColor: [
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(229, 0, 50, 0.6)',
+              ],
+            },
+          ],
+        };
+      case 'Last 30 days':
+        return {
+          labels: ['Approved', 'Pending', 'Rejected'],
+          datasets: [
+            {
+              label: 'Leaves',
+              data: [50, 20, 10],
+              backgroundColor: [
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(229, 0, 50, 0.6)',
+              ],
+            },
+          ],
+        };
+      case 'Last 90 days':
+        return {
+          labels: ['Approved', 'Pending', 'Rejected'],
+          datasets: [
+            {
+              label: 'Leaves',
+              data: [100, 40, 20],
+              backgroundColor: [
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(229, 0, 50, 0.6)',
+              ],
+            },
+          ],
+        };
+      default:
+        return {
+          labels: [],
+          datasets: [],
+        };
+    }
+  };
+
+  const attendanceData = getAttendanceData(attendanceFilter);
+  const leaveData = getLeaveData(leaveFilter);
+
   return (
     <div className="dashboard-container">
       <Header />
@@ -72,9 +206,9 @@ function AdminDashboard() {
           <MetricCard 
             icon={UserX} 
             title="Absent Today" 
-            value={metrics.presentToday}
-            color="bg-green-500"
-          /><br/>
+            value={metrics.totalEmployees - metrics.presentToday}
+            color="bg-red-500"
+          />
           <MetricCard 
             icon={Calendar} 
             title="Pending Leaves" 
@@ -95,31 +229,49 @@ function AdminDashboard() {
           <div className="chart-container">
             <div className="chart-header">
               <h2 className="chart-title">Attendance Trends</h2>
-              <select className="chart-select">
+              <select 
+                className="chart-select"
+                value={attendanceFilter}
+                onChange={(e) => setAttendanceFilter(e.target.value)}
+              >
                 <option>Last 7 days</option>
                 <option>Last 30 days</option>
                 <option>Last 90 days</option>
               </select>
             </div>
             <div className="chart-placeholder">
-              <BarChart3 className="w-12 h-12 text-gray-300" />
-              <p className="text-gray-400 ml-2">Attendance chart will be displayed here</p>
+              <Bar 
+                data={attendanceData} 
+                options={{ 
+                  responsive: true,
+                  maintainAspectRatio: false,
+                }}
+              />
             </div>
           </div>
 
-          {/* Leave Trend Chart (New Feature) */}
+          {/* Leave Trend Chart */}
           <div className="chart-container">
             <div className="chart-header">
               <h2 className="chart-title">Leave Trends</h2>
-              <select className="chart-select">
+              <select 
+                className="chart-select"
+                value={leaveFilter}
+                onChange={(e) => setLeaveFilter(e.target.value)}
+              >
                 <option>Last 7 days</option>
                 <option>Last 30 days</option>
                 <option>Last 90 days</option>
               </select>
             </div>
             <div className="chart-placeholder">
-              <PieChart className="w-12 h-12 text-gray-300" />
-              <p className="text-gray-400 ml-2">Leave trend chart will be displayed here</p>
+              <Pie 
+                data={leaveData} 
+                options={{ 
+                  responsive: true,
+                  maintainAspectRatio: false,
+                }}
+              />
             </div>
           </div>
 
