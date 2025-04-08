@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Roboto", sans-serif;
 }
 :root{
     --main-color:#941936;
@@ -12,7 +11,7 @@
     
 }
 .Navbar{
-    box-shadow: var(--shadow-t2);
+    /* box-shadow: var(--shadow-t2); */
 }
 
 .nav, .nav-links,.account{
@@ -42,19 +41,23 @@
     position: absolute;
     right: -100px;
 }
-.text{
-    font-size: 13px;
+.text h1{
+    font-family: var(--front-primary);
+    font-size: 20px;
+}
+.text p{
+    font-size: 15px;
 }
 
 
 .sidebar{
     position: fixed;
     border: 1px solid var(--main-color);
-    box-shadow: var(--shadow-t);
+    /* box-shadow: var(--shadow-t); */
     width: 250px;
     height: 100vh;
-    top: 65px;
-    z-index: -1;
+    /* z-index: -1; */
+    font-family: var(--front-primary);
 }
 .sidebar .side-m {
     margin-top: 30px;

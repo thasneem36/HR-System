@@ -1,0 +1,10 @@
+:root{
+    /* use like this
+    font-family: var(--front-primary); */
+    --front-primary :'Roboto', sans-serif;
+    --front-secondary: 'Open Sans', sans-serif;
+}
+.container{
+    margin-left: 300px;
+    margin-top: 50px;
+}
