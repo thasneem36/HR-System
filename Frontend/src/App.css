@@ -3,8 +3,10 @@
     font-family: var(--front-primary); */
     --front-primary :'Roboto', sans-serif;
     --front-secondary: 'Open Sans', sans-serif;
+    --main-color: #941936;
+    --background-color: #94193609;
 }
 .container{
-    margin-left: 300px;
-    margin-top: 50px;
+    margin-left: 280px;
+    margin-top: 90px;
 }
