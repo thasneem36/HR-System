@@ -1,6 +1,6 @@
 import React from "react";
 import { PeopleAlt, Fingerprint, PersonOff, PeopleOutline, Person } from '@mui/icons-material';
-import '../../components/style/Overview.css'
+import '../../components/styles/Overview.css'
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 

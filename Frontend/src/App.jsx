@@ -7,10 +7,10 @@ import Attendance from './pages/Admin/Manage/Attendance'
 import TimeOff from './pages/Admin/Manage/TimeOff'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Profile from './pages/Settings/Profile'
-import LeaveSettings from './pages/Settings/LeaveSettings'
-import Calendar from './pages/Settings/Calendar'
-import InOutTime from './pages/Settings/InOutTime'
+import Profile from './pages/Admin/Settings/Profile'
+import LeaveSettings from './pages/Admin/Settings/LeaveSettings'
+import Calendar from './pages/Admin/Settings/Calendar'
+import InOutTime from './pages/Admin/Settings/InOutTime'
 
 
 function App() {
