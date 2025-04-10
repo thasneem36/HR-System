@@ -3,6 +3,7 @@ import { PeopleAlt, Fingerprint, PersonOff, PeopleOutline, Person } from '@mui/i
 import '../../components/styles/Overview.css'
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import AdminNav from "../../navbars/AdminNav";
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -49,74 +50,77 @@ function Overview() {
   };
 
   return (
-    <div className="container container-width">
-      <div className="card-container">
-        {/* Cards for Total Employee, Today Presents, etc. */}
-        <div className="card">
-          <div className="text">
-            <p>Total employee</p>
-            <h1>6</h1>
+    <>
+    <AdminNav />
+      <div className="container container-width">
+        <div className="card-container">
+          {/* Cards for Total Employee, Today Presents, etc. */}
+          <div className="card">
+            <div className="text">
+              <p>Total employee</p>
+              <h1>6</h1>
+            </div>
+            <PeopleAlt className='icon' />
           </div>
-          <PeopleAlt className='icon' />
-        </div>
-        <div className="card">
-          <div className="text">
-            <p>Today presents</p>
-            <h1>3</h1>
+          <div className="card">
+            <div className="text">
+              <p>Today presents</p>
+              <h1>3</h1>
+            </div>
+            <Fingerprint className='icon' />
           </div>
-          <Fingerprint className='icon' />
-        </div>
-        <div className="card">
-          <div className="text">
-            <p>Today absents</p>
-            <h1>3</h1>
+          <div className="card">
+            <div className="text">
+              <p>Today absents</p>
+              <h1>3</h1>
+            </div>
+            <PersonOff className='icon' />
           </div>
-          <PersonOff className='icon' />
-        </div>
-        <div className="card">
-          <div className="text">
-            <p>Today leave</p>
-            <h1>0</h1>
-          </div>
-          <PeopleOutline className='icon' />
-        </div>
-      </div>
-
-      {/* Statistic Section with Bar Chart */}
-      <div className="box">
-        <div>
-          <div className='statistic'>
-            <Bar data={chartData} options={chartOptions} />
+          <div className="card">
+            <div className="text">
+              <p>Today leave</p>
+              <h1>0</h1>
+            </div>
+            <PeopleOutline className='icon' />
           </div>
         </div>
 
-        {/* Leave Application Section */}
-        <div>
-          <div className='leaveApplication'>
-            <p>Leave Application</p>
-            <div className='user'>
-              <div className='user-card'>
-                <Person className='icon-u' />
-                <div className='text'>
-                  <h1>HMM Thasneem</h1>
-                  <p>reason</p>
+        {/* Statistic Section with Bar Chart */}
+        <div className="box">
+          <div>
+            <div className='statistic'>
+              <Bar data={chartData} options={chartOptions} />
+            </div>
+          </div>
+
+          {/* Leave Application Section */}
+          <div>
+            <div className='leaveApplication'>
+              <p>Leave Application</p>
+              <div className='user'>
+                <div className='user-card'>
+                  <Person className='icon-u' />
+                  <div className='text'>
+                    <h1>HMM Thasneem</h1>
+                    <p>reason</p>
+                  </div>
+                  <p className='action'>Rejected</p>
                 </div>
-                <p className='action'>Rejected</p>
-              </div>
 
-              <div className='user-card'>
-                <Person className='icon-u' />
-                <div className='text'>
-                  <h1>HMM Thasneem</h1>
-                  <p>reason</p>
+                <div className='user-card'>
+                  <Person className='icon-u' />
+                  <div className='text'>
+                    <h1>HMM Thasneem</h1>
+                    <p>reason</p>
+                  </div>
+                  <p className='action'>Rejected</p>
                 </div>
-                <p className='action'>Rejected</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

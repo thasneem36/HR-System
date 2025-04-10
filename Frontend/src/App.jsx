@@ -18,7 +18,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <AdminNav />
+        {/* <AdminNav /> */}
         <Routes>
           <Route path='/' element={<Overview />} />
           <Route path='/overview' element={<Overview />} />
