@@ -11,7 +11,9 @@ import Profile from './pages/Admin/Settings/Profile'
 import LeaveSettings from './pages/Admin/Settings/LeaveSettings'
 import Calendar from './pages/Admin/Settings/Calendar'
 import InOutTime from './pages/Admin/Settings/InOutTime'
+import Login from './Login/Login'
 
+import Dashboard from './pages/EmployeeRM/Dashboard'
 
 function App() {
 
@@ -19,8 +21,10 @@ function App() {
     <>
       <BrowserRouter>
         {/* <AdminNav /> */}
+        {/* <Login /> */}
         <Routes>
-          <Route path='/' element={<Overview />} />
+        <Route path="/" element={<Login />} />
+          {/* <Route path='/' element={<Overview />} /> */}
           <Route path='/overview' element={<Overview />} />
           <Route path='/onboard' element={<Onboard />} />
           <Route path='/people' element={<People />} />
@@ -33,6 +37,7 @@ function App() {
           <Route path='/calendar' element={<Calendar />} />
           <Route path='/inOutTime' element={<InOutTime />} />
 
+          <Route path='/rmD' element={<Dashboard />} />
         </Routes>
 
       </BrowserRouter>

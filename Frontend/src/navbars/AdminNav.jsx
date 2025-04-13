@@ -124,7 +124,8 @@ function AdminNav() {
 
                         <li className="sidebar-item">
                             <Logout className="icon-m icon-t-g" />
-                            <span className="text">Logout</span>
+                            <Link to='/' className="text dropdown-li">Logout</Link>
+                            {/* <span className="text">Logout</span> */}
                         </li>
                     </ul>
                 </div>
