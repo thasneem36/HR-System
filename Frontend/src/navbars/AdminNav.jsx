@@ -11,126 +11,116 @@ import {
 } from '@mui/icons-material';
 
 import './Admin.css';
-
-import { Link } from "react-router-dom"; // Corrected import for Link
-
-import Logo from "../assets/ICST.png"; // Correct image path
+import { Link, useNavigate } from "react-router-dom";
+import Logo from "../assets/ICST.png";
 
 function AdminNav() {
     const [manageOpen, setManageOpen] = useState(false);
     const [settingOpen, setSettingOpen] = useState(false);
+    const navigate = useNavigate();
 
     const toggleManage = () => {
         setManageOpen(!manageOpen);
     };
+
     const toggleSetting = () => {
         setSettingOpen(!settingOpen);
     };
 
+    const handleLogout = () => {
+        // Remove token or any user data from localStorage
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userRole");
+
+        // Redirect to login page
+        navigate("/login");
+    };
+
     return (
-        <>
-            <div className="Navbar">
-                <div>
-                    <nav className="nav">
-                        <div className="logo">
-                            <img src={Logo} alt="Logo" />
-                        </div>
-                        <div className="nav-links">
-                            <Notifications className="icon notification icon-l icon-t-g " />
-                            <div className="account">
-                                <Person className="icon icon-l icon-t-g" />
-                                <div className="text">
-                                    <h1>HMM Thasneem</h1>
-                                    <p>thasneem9mt@gmail.com</p>
-                                </div>
-                            </div>
-                            <div className="dropdown">
-                                <KeyboardArrowDown className="icon icon-l" />
-                            </div>
-                        </div>
-                    </nav>
+        <div className="Navbar">
+            <nav className="nav">
+                <div className="logo">
+                    <img src={Logo} alt="Logo" />
                 </div>
-                <div className="sidebar">
-                    <ul className="side-m">
-                        {/* Overview section */}
-                        <li className="sidebar-item">
-                            <Dashboard className="icon-m icon-t-g" />
-                            <Link to="/" className="text dropdown-li">Overview</Link>
-                        </li>
+                <div className="nav-links">
+                    <Notifications className="icon notification icon-l icon-t-g" />
+                    <div className="account">
+                        <Person className="icon icon-l icon-t-g" />
+                        <div className="text">
+                            <h1>HMM Thasneem</h1>
+                            <p>thasneem9mt@gmail.com</p>
+                        </div>
+                    </div>
+                    <div className="dropdown">
+                        <KeyboardArrowDown className="icon icon-l" />
+                    </div>
+                </div>
+            </nav>
 
-                        {/* Manage dropdown */}
-                        <li className="sidebar-item" onClick={toggleManage}>
-                            <ManageAccounts className="icon-m icon-t-g" />
-                            <span className="text">Manage</span>
+            <div className="sidebar">
+                <ul className="side-m">
+                    <li className="sidebar-item">
+                        <Dashboard className="icon-m icon-t-g" />
+                        <Link to="/" className="text dropdown-li">Overview</Link>
+                    </li>
 
+                    <li className="sidebar-item" onClick={toggleManage}>
+                        <ManageAccounts className="icon-m icon-t-g" />
+                        <span className="text">Manage</span>
+                        <span className="arrow">
                             {manageOpen ? (
-                                <span className="arrow">
-                                    <KeyboardArrowUp className="icon-m icon-right" />
-                                </span>
+                                <KeyboardArrowUp className="icon-m icon-right" />
                             ) : (
-                                <span className="arrow">
-                                    <KeyboardArrowDown className="icon-m icon-right" />
-                                </span>
+                                <KeyboardArrowDown className="icon-m icon-right" />
                             )}
-                        </li>
+                        </span>
+                    </li>
 
-                        {manageOpen && (
-                            <ul className="dropdown">
-                                <li className="manage-item">
-                                    <Link to="/onboard" className="dropdown-li">Onboard</Link>
-                                </li>
-                                <li className="manage-item">
-                                    <Link to="/people" className="dropdown-li">People</Link>
-                                </li>
-                                <li className="manage-item">
-                                    <Link to="/attendance" className="dropdown-li">Attendance</Link>
-                                </li>
-                                <li className="manage-item">
-                                    <Link to="/timeOff" className="dropdown-li">Time-off</Link>
-                                </li>
-                            </ul>
-                        )}
+                    {manageOpen && (
+                        <ul className="dropdown">
+                            <li className="manage-item">
+                                <Link to="/people" className="dropdown-li">People</Link>
+                            </li>
+                            <li className="manage-item">
+                                <Link to="/attendance" className="dropdown-li">Attendance</Link>
+                            </li>
+                            <li className="manage-item">
+                                <Link to="/timeOff" className="dropdown-li">Time-off</Link>
+                            </li>
+                        </ul>
+                    )}
 
-                        {/* Settings and Logout */}
-                        <li className="sidebar-item" onClick={toggleSetting}>
-                            <Settings className="icon-m icon-t-g" />
-                            <span className="text">Settings</span>
+                    <li className="sidebar-item" onClick={toggleSetting}>
+                        <Settings className="icon-m icon-t-g" />
+                        <span className="text">Settings</span>
+                        <span className="arrow">
                             {settingOpen ? (
-                                <span>
-                                    <KeyboardArrowUp className="icon-m icon-right" />
-                                </span>
+                                <KeyboardArrowUp className="icon-m icon-right" />
                             ) : (
-                                <span>
-                                    <KeyboardArrowDown className="icon-m icon-right" />
-                                </span>
+                                <KeyboardArrowDown className="icon-m icon-right" />
                             )}
-                        </li>
-                        {settingOpen && (
-                            <ul className="dropdown">
-                                <li className="manage-item">
-                                    <Link to="/profile" className="dropdown-li">Profile</Link>
-                                </li>
-                                <li className="manage-item">
-                                    <Link to="/leaveSettings" className="dropdown-li">Leave Settings</Link>
-                                </li>
-                                <li className="manage-item">
-                                    <Link to="/calendar" className="dropdown-li">Calendar</Link>
-                                </li>
-                                <li className="manage-item">
-                                    <Link to="/inOutTime" className="dropdown-li">In Out Time</Link>
-                                </li>
-                            </ul>
-                        )}
+                        </span>
+                    </li>
 
-                        <li className="sidebar-item">
-                            <Logout className="icon-m icon-t-g" />
-                            <Link to='/' className="text dropdown-li">Logout</Link>
-                            {/* <span className="text">Logout</span> */}
-                        </li>
-                    </ul>
-                </div>
+                    {settingOpen && (
+                        <ul className="dropdown">
+                            <li className="manage-item">
+                                <Link to="/leaveSettings" className="dropdown-li">Leave Settings</Link>
+                            </li>
+                            <li className="manage-item">
+                                <Link to="/calendar" className="dropdown-li">Calendar</Link>
+                            </li>
+                        </ul>
+                    )}
+
+                    {/* Logout */}
+                    <li className="sidebar-item" onClick={handleLogout}>
+                        <Logout className="icon-m icon-t-g" />
+                        <span className="text dropdown-li">Logout</span>
+                    </li>
+                </ul>
             </div>
-        </>
+        </div>
     );
 }
 
