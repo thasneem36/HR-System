@@ -1,0 +1,154 @@
+/* Attendance Page Styled to Match Navbar/Sidebar Aesthetic */
+
+/* Container */
+.attendance-container {
+    padding: 30px;
+    margin-left: 280px; /* Sidebar spacing */
+    margin-top: 60px; /* Navbar height */
+    font-family: var(--front-primary, 'Segoe UI', sans-serif);
+    background-color: #fff;
+    min-height: 100vh;
+  }
+  
+  /* Title */
+  .attendance-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--main-color);
+  }
+  
+  /* Filters */
+  .attendance-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 25px;
+    align-items: center;
+  }
+  
+  .filter-input {
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: var(--background-color);
+    color: #111;
+    min-width: 130px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .filter-input:focus {
+    border-color: var(--main-color);
+    outline: none;
+    background-color: #fff;
+  }
+  
+  .filter-button {
+    padding: 10px 18px;
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow-t);
+  }
+  
+  .filter-button:hover {
+    background-color: #7e162f;
+  }
+  
+  /* Table Wrapper */
+  .table-wrapper {
+    overflow-x: auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow-t);
+    padding: 15px;
+    border: 1px solid #eee;
+  }
+  
+  /* Table Styles */
+  .attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+    color: #111;
+  }
+  
+  .attendance-table thead {
+    background-color: var(--background-color);
+  }
+  
+  .attendance-table th,
+  .attendance-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .attendance-table th {
+    font-weight: 600;
+    font-size: 15px;
+    color: #333;
+  }
+  
+  .attendance-table tbody tr:hover {
+    background-color: var(--background-color);
+  }
+  
+  /* Time Input */
+  .attendance-table input[type="time"] {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+    color: #111;
+  }
+  
+  .attendance-table input[type="time"]:focus {
+    border-color: var(--main-color);
+    outline: none;
+  }
+  
+  /* Pagination */
+  .pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .pagination-button {
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #111;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-t2);
+  }
+  
+  .pagination-button:hover:not([disabled]) {
+    background-color: var(--main-color);
+    color: white;
+    border-color: var(--main-color);
+  }
+  
+  .pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination-button.active {
+    background-color: var(--main-color);
+    color: white;
+    font-weight: bold;
+  }
+  

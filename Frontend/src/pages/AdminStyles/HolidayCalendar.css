@@ -1,0 +1,94 @@
+/* Calendar Page Styled to Match Navbar/Sidebar Aesthetic */
+
+.calendar-container {
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: var(--shadow-t);
+    margin-left: 270px; /* Matches sidebar */
+    margin-top: 90px; /* Matches navbar */
+    font-family: var(--front-primary, 'Segoe UI', sans-serif);
+  }
+  
+  .calendar-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--main-color);
+  }
+  
+  .calendar-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .calendar-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .calendar-label {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 4px;
+  }
+  
+  .calendar-input {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 180px;
+    font-size: 14px;
+    background-color: var(--background-color);
+    transition: border-color 0.3s ease;
+  }
+  
+  .calendar-input:focus {
+    border-color: var(--main-color);
+    background-color: #fff;
+    outline: none;
+  }
+  
+  .calendar-add-btn {
+    background-color: var(--main-color);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow-t2);
+  }
+  
+  .calendar-add-btn:hover {
+    background-color: #7e162f;
+  }
+  
+  .calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: var(--shadow-t);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .calendar-table th,
+  .calendar-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #111;
+  }
+  
+  .calendar-table th {
+    background-color: var(--background-color);
+    color: #333;
+    font-weight: 600;
+  }
+  

@@ -1,20 +1,10 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import {
-  Box,
-  Typography,
-  TextField,
-  MenuItem,
-  Button,
-  Grid,
-  Stack
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import { useLeaveContext } from './LeaveContext';
-
-Modal.setAppElement('#root');
+import './LeaveRequestForm.css';
 
 const LeaveRequestForm = ({ onClose }) => {
-  const { addLeaveRequest } = useLeaveContext();
+  const context = useLeaveContext();
+  const { addLeaveRequest } = context || {};
 
   const [formData, setFormData] = useState({
     leaveType: '',
@@ -36,131 +26,117 @@ const LeaveRequestForm = ({ onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    addLeaveRequest({
-      ...formData,
-      name: 'HMM.Thasneem',
-      submittedAt: new Date().toLocaleString()
-    });
+    if (addLeaveRequest) {
+      addLeaveRequest({
+        ...formData,
+        name: 'HMM.Thasneem',
+        submittedAt: new Date().toLocaleString()
+      });
+    }
 
-    onClose(); 
+    onClose();
   };
 
+  useEffect(() => {
+    document.title = "Leave Request Form";
+  }, []);
+
   return (
-    <Modal
-      isOpen={true}
-      onRequestClose={onClose}
-      style={{
-        content: {
-          maxWidth: '600px',
-          margin: 'auto',
-          padding: '32px',
-          borderRadius: '12px'
-        },
-        overlay: {
-          backgroundColor: 'rgba(0, 0, 0, 0.4)'
-        }
-      }}
-    >
-      <Box component="form" onSubmit={handleSubmit}>
-        {/* Header */}
-        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-          <Typography variant="h6" fontWeight="bold">Leave Request Form</Typography>
-          <Button onClick={onClose} variant="outlined" size="small">×</Button>
-        </Stack>
-
+    <div className="leave-request-form">
+      <form onSubmit={handleSubmit}>
         {/* Leave Type */}
-        <TextField
-          select
-          label="Leave Type"
-          name="leaveType"
-          value={formData.leaveType}
-          onChange={handleChange}
-          fullWidth
-          required
-          margin="normal"
-        >
-          <MenuItem value="">Select leave type</MenuItem>
-          <MenuItem value="Annual Leave">Annual Leave</MenuItem>
-          <MenuItem value="Sick Leave">Sick Leave</MenuItem>
-          <MenuItem value="Personal Leave">Personal Leave</MenuItem>
-          <MenuItem value="Unpaid Leave">Unpaid Leave</MenuItem>
-          <MenuItem value="Duty Leave">Duty Leave</MenuItem>
-        </TextField>
+        <div className="form-group">
+          <label htmlFor="leaveType">Leave Type</label>
+          <select
+            id="leaveType"
+            name="leaveType"
+            value={formData.leaveType}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Leave Type</option>
+            <option value="annual">Annual Leave</option>
+            <option value="sick">Sick Leave</option>
+            <option value="personal">Personal Leave</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
 
-        {/* Start Date, End Date, No. of Days */}
-        <Grid container spacing={2} mt={1}>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              label="Start Date"
+        {/* Date Fields */}
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="startDate">Start Date</label>
+            <input
               type="date"
+              id="startDate"
               name="startDate"
               value={formData.startDate}
               onChange={handleChange}
-              InputLabelProps={{ shrink: true }}
-              fullWidth
               required
             />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              label="End Date"
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="endDate">End Date</label>
+            <input
               type="date"
+              id="endDate"
               name="endDate"
               value={formData.endDate}
               onChange={handleChange}
-              InputLabelProps={{ shrink: true }}
-              fullWidth
               required
             />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              label="Number of Leave Days"
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="numLeaveDays">Number of Leave Days</label>
+            <input
               type="number"
+              id="numLeaveDays"
               name="numLeaveDays"
               value={formData.numLeaveDays}
               onChange={handleChange}
-              fullWidth
+              min="1"
               required
-              inputProps={{ min: 1 }}
             />
-          </Grid>
-        </Grid>
+          </div>
+        </div>
 
         {/* Reason */}
-        <TextField
-          label="Reason for Leave"
-          name="reason"
-          value={formData.reason}
-          onChange={handleChange}
-          fullWidth
-          multiline
-          rows={4}
-          margin="normal"
-          required
-        />
+        <div className="form-group">
+          <label htmlFor="reason">Reason</label>
+          <textarea
+            id="reason"
+            name="reason"
+            value={formData.reason}
+            onChange={handleChange}
+            required
+            placeholder="Please provide a reason for your leave request"
+          ></textarea>
+        </div>
 
         {/* Attachment */}
-        <Box mt={2}>
-          <Typography variant="body2" gutterBottom>
-            Attachment (if any)
-          </Typography>
+        <div className="form-group">
+          <label htmlFor="attachment">Attachment (if any)</label>
           <input
             type="file"
+            id="attachment"
             name="attachment"
             onChange={handleChange}
           />
-        </Box>
+        </div>
 
         {/* Actions */}
-        <Stack direction="row" justifyContent="flex-end" spacing={2} mt={4}>
-          <Button variant="outlined" onClick={onClose}>Cancel</Button>
-          <Button variant="contained" type="submit" sx={{ backgroundColor: '#ae152d', '&:hover': { backgroundColor: '#7f2f44' } }}>
+        <div className="form-actions">
+          <button type="button" className="cancel-button" onClick={onClose}>
+            Cancel
+          </button>
+          <button type="submit" className="submit-button">
             Submit Request
-          </Button>
-        </Stack>
-      </Box>
-    </Modal>
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 

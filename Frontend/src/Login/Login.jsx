@@ -33,8 +33,8 @@ const Login = () => {
       localStorage.setItem('role', user.role);
 
       if (user.role === 'admin') navigate('/overview');
-      else if (user.role === 'employee') navigate('/employee');
-      else if (user.role === 'rm') navigate('/rmD');``
+      else if (user.role === 'employee') navigate('/employeedashboard');
+      else if (user.role === 'rm') navigate('/rmdashboard');``
     } else {
       alert('Login failed. Invalid credentials.');
     }

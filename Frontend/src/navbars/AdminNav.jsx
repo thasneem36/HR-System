@@ -61,7 +61,7 @@ function AdminNav() {
                 <ul className="side-m">
                     <li className="sidebar-item">
                         <Dashboard className="icon-m icon-t-g" />
-                        <Link to="/" className="text dropdown-li">Overview</Link>
+                        <Link to="/overview" className="text dropdown-li">Overview</Link>
                     </li>
 
                     <li className="sidebar-item" onClick={toggleManage}>
@@ -114,9 +114,11 @@ function AdminNav() {
                     )}
 
                     {/* Logout */}
-                    <li className="sidebar-item" onClick={handleLogout}>
-                        <Logout className="icon-m icon-t-g" />
-                        <span className="text dropdown-li">Logout</span>
+                    <li className="sidebar-item">
+                        <Link to="/" onClick={handleLogout} className="dropdown-li">
+                            <Logout className="icon-m icon-t-g" />
+                            <span className="text">Logout</span>
+                        </Link>
                     </li>
                 </ul>
             </div>
