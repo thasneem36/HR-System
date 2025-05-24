@@ -14,40 +14,39 @@ import InOutTime from './pages/Admin/Settings/InOutTime'
 import Login from './Login/Login'
 import LeaveRequestForm from './components/EmployeeRM/LeaveRequestForm'
 
-import Dashboard from './pages/EmployeeRM/Dashboard'
-const isLoggedIn = !!localStorage.getItem("authToken");
+const isLoggedIn = !!localStorage.getItem('authToken');
 
 function App() {
-
   return (
-    <>
+    <LeaveProvider>
       <BrowserRouter>
-        {/* <AdminNav /> */}
-        {/* <Login /> */}
         <Routes>
-        <Route path="/dashboard" element={isLoggedIn ? <AdminDashboard /> : <Navigate to="/login" />} />
-        <Route path="/" element={<Login />} />
-          {/* <Route path='/' element={<Overview />} /> */}
-          <Route path='/overview' element={<Overview />} />
-          <Route path='/onboard' element={<Onboard />} />
-          <Route path='/people' element={<People />} />
-          <Route path='/attendance' element={<Attendance />} />
-          <Route path='/timeOff' element={<TimeOff />} />
-          
-          {/* settings route */}
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/leaveSettings' element={<LeaveSettings />} />
-          <Route path='/calendar' element={<Calendar />} />
-          <Route path='/inOutTime' element={<InOutTime />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={isLoggedIn ? <Overview /> : <Navigate to="/" />} />
+          <Route path="/overview" element={<Overview />} />
+          <Route path="/onboard" element={<Onboard />} />
+          <Route path="/people" element={<People />} />
+          <Route path="/attendance" element={<Attendance />} />
+          <Route path="/timeOff" element={<TimeOff />} />
 
-          <Route path='/rmD' element={<Dashboard />} />
-          <Route path='LeaveRequest' element={<LeaveRequestForm />}/>
-          
+          {/* Settings */}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/leaveSettings" element={<LeaveSettings />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/inOutTime" element={<InOutTime />} />
+
+          {/* RM Employee Dashboard */}
+          <Route path="/rmdashboard" element={<Dashboard />} />
+
+          {/*Employee Dashboard*/}
+          <Route path='/employeedashboard' element={<EmployeeDashboard/>}/>
+
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/request-leave" element={<LeaveRequestPage />} />
         </Routes>
-
       </BrowserRouter>
-    </>
-  )
+    </LeaveProvider>
+  );
 }
 
-export default App
+export default App;

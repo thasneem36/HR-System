@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import LogoutIcon from '@mui/icons-material/Logout';
 import LeaveRequestForm from '../../components/EmployeeRM/LeaveRequestForm';
-import LeaveRequestsPage from '../../components/EmployeeRM/LeaveRequestsPage';
 import Profile from '../../components/EmployeeRM/Profile';
 import Logo from '../../assets/ICST.png';
 import profilePic from '../../assets/profile.jpg';
 import { useLeaveContext } from '../../components/EmployeeRM/LeaveContext';
-import './Dashboard.css';
+import { useNavigate } from 'react-router-dom';
+import './EmployeeDashboard.css';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -17,7 +19,8 @@ function Dashboard() {
     leaveRequests = [],
     notifications = [],
     successMessage,
-    setSuccessMessage
+    setSuccessMessage,
+    addLeaveRequest
   } = useLeaveContext() || {};
 
   useEffect(() => {
@@ -27,9 +30,16 @@ function Dashboard() {
     }
   }, [successMessage]);
 
+  const handleCloseModal = () => {
+    setActiveComponent(null);
+    setShowNotifications(false);
+  };
+
   const handleLogout = () => {
+    // Clear any stored user data
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    // Redirect to login page
     navigate('/');
   };
 
@@ -41,10 +51,6 @@ function Dashboard() {
     pending: 3
   };
 
-  useEffect(() => {
-    document.title = "Leave Management";
-  }, []);
-
   return (
     <div className="dashboard-container">
       {/* Top Bar */}
@@ -52,18 +58,23 @@ function Dashboard() {
         <div className="logo-container">
           <img src={Logo} alt="Logo" className="logo" />
         </div>
-        <div className="top-bar-right">
-          <div className="notifications-icon" onClick={() => setShowNotifications(true)}>
-            <i className="fas fa-bell"></i>
-            {notifications.length > 0 && (
-              <span className="notification-badge">{notifications.length}</span>
-            )}
+        <div className="top-right">
+          <NotificationsIcon 
+            className="notification-icon"
+            onClick={() => setShowNotifications(true)}
+          />
+          <div 
+            className="profile-section"
+            onClick={() => setActiveComponent('profile')}
+          >
+            <AccountCircle className="profile-icon" />
           </div>
-          <div className="profile-section" onClick={() => setActiveComponent('profile')}>
-            <i className="fas fa-user-circle"></i>
-          </div>
-          <button className="logout-button" onClick={handleLogout}>
-            <i className="fas fa-sign-out-alt"></i>
+          <button 
+            className="logout-button"
+            onClick={handleLogout}
+            aria-label="Logout"
+          >
+            <LogoutIcon className="logout-icon" />
             <span>Logout</span>
           </button>
         </div>
@@ -78,34 +89,36 @@ function Dashboard() {
         </div>
       )}
 
-      {/* Profile Info */}
-      <div className="profile-info">
-        <div className="profile-details">
+      {/* Profile Section */}
+      <div className="profile-container">
+        <div className="profile-info">
           <p><strong>ID:</strong> 123456</p>
           <p><strong>Name:</strong> Thasneem</p>
           <p><strong>Department:</strong> Dev Team</p>
         </div>
         <div className="profile-image-container">
-          <img src={profilePic} alt="Profile" className="profile-image" />
+          <img
+            src={profilePic}
+            alt="Profile"
+            className="profile-image"
+          />
         </div>
       </div>
 
-      {/* Leave Summary & Request Button */}
-      <div className="summary-container">
+      {/* Leave Summary */}
+      <div className="leave-summary">
         <button
-          className="request-leave-button"
-          onClick={() => setActiveComponent('requestLeave')}
+          className="request-leave-btn"
+          onClick={() => navigate('/request-leave')}
         >
           Request Leave
         </button>
-
         <div className="stats-container">
-          {[
-            ['Total Leaves', leaveStats.total],
+          {[['total leaves', leaveStats.total],
             ['Balance', leaveStats.balance],
             ['Accepted', leaveStats.accepted],
             ['Rejected', leaveStats.rejected],
-            ['Pending', leaveStats.pending]
+            ['pending', leaveStats.pending]
           ].map(([label, value]) => (
             <div key={label} className="stat-card">
               <p className="stat-label">{label}</p>
@@ -131,72 +144,53 @@ function Dashboard() {
             </tr>
           </thead>
           <tbody>
-            {leaveRequests && leaveRequests.length > 0 ? (
-              leaveRequests
-                .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
-                .map((row, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{row.name}</td>
-                    <td>{row.startDate}</td>
-                    <td>{row.endDate}</td>
-                    <td>{row.leaveType}</td>
-                    <td>
-                      {Math.ceil(
-                        (new Date(row.endDate) - new Date(row.startDate)) / (1000 * 60 * 60 * 24)
-                      ) + 1}
-                    </td>
-                    <td>
-                      <span className={`status ${row.reportingManagerStatus?.toLowerCase() || 'pending'}`}>
-                        {row.reportingManagerStatus || 'Pending'}
-                      </span>
-                    </td>
-                  </tr>
-                ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="no-data">No recent leave requests</td>
-              </tr>
-            )}
+            {leaveRequests && leaveRequests.length > 0
+              ? leaveRequests.sort((a, b) => new Date(b.startDate) - new Date(a.startDate)).map((row, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{row.name}</td>
+                  <td>{row.startDate}</td>
+                  <td>{row.endDate}</td>
+                  <td>{row.leaveType}</td>
+                  <td>
+                    {Math.ceil(
+                      (new Date(row.endDate) - new Date(row.startDate)) /
+                      (1000 * 60 * 60 * 24)
+                    ) + 1}
+                  </td>
+                  <td>
+                    <span className={`status ${row.reportingManagerStatus?.toLowerCase()}`}>
+                      {row.reportingManagerStatus || 'Pending'}
+                    </span>
+                  </td>
+                </tr>
+              )) : (
+                <tr>
+                  <td colSpan="7" className="no-data">No recent leave requests</td>
+                </tr>
+              )}
           </tbody>
         </table>
       </div>
 
-      {/* Leave Details Button */}
-      <div className="view-leave-button-container">
-        <button
-          className="view-leave-button"
-          onClick={() => setActiveComponent('viewLeaveRequests')}
-        >
-          View Leave Requests
-        </button>
-      </div>
-
-      {/* Modals for Forms & Pages */}
+      {/* Conditional Components */}
       <div className="modal-container">
         {activeComponent === 'requestLeave' && (
-          <div className="modal-overlay">
-            <div className="modal-content leave-request-modal">
+          <div className="modal leave-request-modal">
+            <div className="modal-content">
               <LeaveRequestForm onClose={() => setActiveComponent(null)} />
             </div>
           </div>
         )}
-
-        {activeComponent === 'viewLeaveRequests' && (
-          <LeaveRequestsPage
-            leaveRequests={leaveRequests}
-            onClose={() => setActiveComponent(null)}
-          />
-        )}
-
-        {activeComponent === 'profile' && (
-          <Profile open={true} onClose={() => setActiveComponent(null)} />
-        )}
+        <Profile 
+          open={activeComponent === 'profile'} 
+          onClose={handleCloseModal} 
+        />
       </div>
 
       {/* Notification Modal */}
       {showNotifications && (
-        <div className="modal-overlay">
+        <div className="modal" role="dialog" aria-modal="true">
           <div className="modal-content">
             <h3>Notifications</h3>
             {notifications.length === 0 ? (
@@ -205,13 +199,13 @@ function Dashboard() {
               notifications.map((note, index) => (
                 <div key={index} className="notification-item">
                   <p>{note.message}</p>
-                  <small>{note.timestamp}</small>
+                  <p className="notification-time">{note.timestamp}</p>
                 </div>
               ))
             )}
-            <button
-              className="close-button"
-              onClick={() => setShowNotifications(false)}
+            <button 
+              className="close-btn"
+              onClick={handleCloseModal}
             >
               Close
             </button>
