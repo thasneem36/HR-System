@@ -29,6 +29,8 @@ function Overview() {
       }
     ]
   };
+  
+  
 
   // Options for the bar chart
   const chartOptions = {
@@ -48,9 +50,12 @@ function Overview() {
       },
     },
   };
+  
+  
 
   return (
     <>
+    
     <AdminNav />
       <div className="container container-width">
         <div className="card-container">
