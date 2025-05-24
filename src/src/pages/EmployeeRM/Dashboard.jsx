@@ -14,27 +14,28 @@ import {
   TableRow,
   Modal
 } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
+import {
+  AccountCircle
+} from '@mui/icons-material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import LeaveRequestForm from '../../components/EmployeeRM/LeaveRequestForm';
 import LeaveRequestsPage from '../../components/EmployeeRM/LeaveRequestsPage';
 import Profile from '../../components/EmployeeRM/Profile';
-import Logo from '../../assets/ICST.png';
-import profilePic from '../../assets/profile.jpg';
+import Logo from '../../assets/EmployeeRM/Logo.png';
+import profilePic from '../../assets/EmployeeRM/profile.jpg';
 import { useLeaveContext } from '../../components/EmployeeRM/LeaveContext';
 
 function Dashboard() {
   const [activeComponent, setActiveComponent] = useState(null);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  // Assuming leaveRequests, notifications, and successMessage are provided via context
   const {
-    leaveRequests = [],  // Default to empty array if not provided
-    notifications = [],
+    leaveRequests,
+    notifications,
     successMessage,
     setSuccessMessage
-  } = useLeaveContext() || {}; // Added safety for undefined context
+  } = useLeaveContext();
 
   useEffect(() => {
     if (successMessage) {
@@ -76,6 +77,7 @@ function Dashboard() {
             sx={{ cursor: 'pointer' }}
             onClick={() => setShowNotifications(true)}
           />
+          
           <Stack
             direction="row"
             spacing={1}
@@ -143,7 +145,7 @@ function Dashboard() {
       >
         <Button
           variant="contained"
-          onClick={() => setActiveComponent('LeaveRequestForm')}
+          onClick={() => setActiveComponent('requestLeave')}
           sx={{
             backgroundColor: '#ae152d',
             '&:hover': {
@@ -195,8 +197,9 @@ function Dashboard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {leaveRequests && leaveRequests.length > 0
-              ? leaveRequests.sort((a, b) => new Date(b.startDate) - new Date(a.startDate)).map((row, index) => (
+            {[...leaveRequests]
+              .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
+              .map((row, index) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{row.name}</TableCell>
@@ -225,12 +228,9 @@ function Dashboard() {
                     </Typography>
                   </TableCell>
                 </TableRow>
-              )) : (
-                <TableRow>
-                  <TableCell colSpan={7} align="center">No recent leave requests</TableCell>
-                </TableRow>
-              )}
+              ))}
           </TableBody>
+
         </Table>
       </TableContainer>
 
