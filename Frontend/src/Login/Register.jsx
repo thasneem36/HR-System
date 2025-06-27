@@ -1,96 +1,138 @@
 import { useState } from 'react';
-import axios from '../axios';
 import { useNavigate, Link } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  TextField,
+  Typography,
+  Link as MuiLink,
+  Alert,
+} from '@mui/material';
+import { authAPI } from '../services/api';
 
 const Register = () => {
-  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'employee' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    nic: '',
+    phone: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
+
     try {
-      const res = await axios.post('/register', form);
-      const { token, user } = res.data;
-
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', user.role);
-
-      if (user.role === 'admin') navigate('/admin');
-      else if (user.role === 'employee') navigate('/employee');
-      else if (user.role === 'rm') navigate('/rm');
+      const response = await authAPI.register(form);
+      // After successful registration, redirect to login
+      navigate('/login', { state: { message: 'Registration successful. Please login.' } });
     } catch (err) {
-      alert('Registration failed');
+      setError(err.response?.data?.message || 'Registration failed');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center min-vh-100" style={{ backgroundColor: '#f5f6fa' }}>
-      <div className="card shadow p-4 border-0" style={{ maxWidth: '450px', width: '100%' }}>
-        <h2 className="text-center mb-4" style={{ color: '#941936' }}>Create Your Account</h2>
-        <form onSubmit={handleRegister}>
-          <div className="mb-3">
-            <label className="form-label fw-semibold text-muted">Name</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Full Name"
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      bgcolor="#f5f6fa"
+    >
+      <Card sx={{ maxWidth: 400, width: '100%', boxShadow: 3, p: 3 }}>
+        <CardContent>
+          <Typography variant="h4" align="center" color="#941936" gutterBottom>
+            Create Your Account
+          </Typography>
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
+          <Box component="form" onSubmit={handleRegister} noValidate>
+            <TextField
+              label="Full Name"
+              fullWidth
+              margin="normal"
+              required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              required
             />
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label fw-semibold text-muted">Email</label>
-            <input
+            <TextField
+              label="Email"
               type="email"
-              className="form-control"
-              placeholder="you@example.com"
+              fullWidth
+              margin="normal"
+              required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              required
             />
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label fw-semibold text-muted">Password</label>
-            <input
+            <TextField
+              label="Password"
               type="password"
-              className="form-control"
-              placeholder="Create a password"
+              fullWidth
+              margin="normal"
+              required
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
             />
-          </div>
-
-          <div className="mb-4">
-            <label className="form-label fw-semibold text-muted">Role</label>
-            <select
-              className="form-select"
-              value={form.role}
-              onChange={(e) => setForm({ ...form, role: e.target.value })}
+            <TextField
+              label="Confirm Password"
+              type="password"
+              fullWidth
+              margin="normal"
               required
+              value={form.password_confirmation}
+              onChange={(e) => setForm({ ...form, password_confirmation: e.target.value })}
+            />
+            <TextField
+              label="NIC"
+              fullWidth
+              margin="normal"
+              required
+              value={form.nic}
+              onChange={(e) => setForm({ ...form, nic: e.target.value })}
+            />
+            <TextField
+              label="Phone"
+              fullWidth
+              margin="normal"
+              required
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={loading}
+              sx={{ mt: 2, backgroundColor: '#941936', '&:hover': { backgroundColor: '#7a0f2b' } }}
             >
-              <option value="admin">HR (Admin)</option>
-              <option value="employee">Employee</option>
-              <option value="rm">RM</option>
-            </select>
-          </div>
+              {loading ? 'Registering...' : 'Register'}
+            </Button>
+          </Box>
 
-          <button type="submit" className="btn text-white w-100" style={{ backgroundColor: '#941936' }}>
-            Register
-          </button>
-        </form>
-
-        <div className="text-center mt-3">
-          <p className="mb-1 text-muted">Already have an account?</p>
-          <Link to="/" className="fw-bold text-decoration-none" style={{ color: '#941936' }}>
-            Back to Login
-          </Link>
-        </div>
-      </div>
-    </div>
+          <Box textAlign="center" mt={3}>
+            <Typography variant="body2" color="text.secondary">
+              Already have an account?
+            </Typography>
+            <MuiLink component={Link} to="/login" underline="hover" sx={{ color: '#941936', fontWeight: 'bold' }}>
+              Back to Login
+            </MuiLink>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

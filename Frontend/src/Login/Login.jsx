@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link as RouterLink, useLocation } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -8,35 +8,43 @@ import {
   TextField,
   Typography,
   Link,
+  Alert,
 } from '@mui/material';
+import { authAPI } from '../services/api';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Sample users data
-  const users = [
-    { email: 'admin@example.com', password: '123', role: 'admin' },
-    { email: 'rm@example.com', password: '123', role: 'rm' },
-    { email: 'employee@example.com', password: '123', role: 'employee' }
-  ];
+  // Show success message from registration
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccess(location.state.message);
+    }
+  }, [location]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+    setLoading(true);
 
-    const user = users.find(
-      (user) => user.email === form.email && user.password === form.password
-    );
-
-    if (user) {
-      localStorage.setItem('token', 'sampleToken123');
-      localStorage.setItem('role', user.role);
-
-      if (user.role === 'admin') navigate('/overview');
-      else if (user.role === 'employee') navigate('/employeedashboard');
-      else if (user.role === 'rm') navigate('/rmdashboard');``
-    } else {
-      alert('Login failed. Invalid credentials.');
+    try {
+      const response = await authAPI.login(form);
+      // Store the token in localStorage
+      localStorage.setItem('token', response.data.token);
+      // Store user data if needed
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      // Redirect to employees page
+      navigate('/employees');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Invalid email or password');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,6 +61,16 @@ const Login = () => {
           <Typography variant="h4" align="center" color="#941936" gutterBottom>
             Welcome Back
           </Typography>
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {success}
+            </Alert>
+          )}
           <Box component="form" onSubmit={handleLogin} noValidate>
             <TextField
               label="Email"
@@ -76,9 +94,10 @@ const Login = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading}
               sx={{ mt: 2, backgroundColor: '#941936', '&:hover': { backgroundColor: '#7a0f2b' } }}
             >
-              Login
+              {loading ? 'Logging in...' : 'Login'}
             </Button>
           </Box>
 
@@ -96,4 +115,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login; 

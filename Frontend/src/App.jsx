@@ -1,52 +1,75 @@
-import './App.css'
-import AdminNav from './navbars/AdminNav'
-import Onboard from './pages/Admin/Manage/Onboard'
-import People from './pages/Admin/Manage/People'
-import Overview from './pages/Admin/Overview'
-import Attendance from './pages/Admin/Manage/Attendance'
-import TimeOff from './pages/Admin/Manage/TimeOff'
-import { Navigate } from "react-router-dom";
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Profile from './pages/Admin/Settings/Profile'
-import LeaveSettings from './pages/Admin/Settings/LeaveSettings'
-import Calendar from './pages/Admin/Settings/Calendar'
-import InOutTime from './pages/Admin/Settings/InOutTime'
-import Login from './Login/Login'
-import LeaveRequestForm from './components/EmployeeRM/LeaveRequestForm'
+// <<<<<<< Athnan
+// import React from 'react';
+// import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// import { ThemeProvider } from '@mui/material';
+// import CssBaseline from '@mui/material/CssBaseline';
+// import theme from './theme';
 
-const isLoggedIn = !!localStorage.getItem('authToken');
+// // Components
+// import MainLayout from './components/Layout/MainLayout';
+// import Login from './Login/Login';
+// import Register from './components/Auth/Register';
+// import ProtectedRoute from './components/Auth/ProtectedRoute';
+// =======
+// import './App.css'
+// import AdminNav from './navbars/AdminNav'
+// import Onboard from './pages/Admin/Manage/Onboard'
+// import People from './pages/Admin/Manage/People'
+// import Overview from './pages/Admin/Overview'
+// import Attendance from './pages/Admin/Manage/Attendance'
+// import TimeOff from './pages/Admin/Manage/TimeOff'
+// import { Navigate } from "react-router-dom";
+// import { BrowserRouter, Route, Routes } from 'react-router-dom'
+// import Profile from './pages/Admin/Settings/Profile'
+// import LeaveSettings from './pages/Admin/Settings/LeaveSettings'
+// import Calendar from './pages/Admin/Settings/Calendar'
+// import InOutTime from './pages/Admin/Settings/InOutTime'
+// import Login from './Login/Login'
+// import LeaveRequestForm from './components/EmployeeRM/LeaveRequestForm'
+// >>>>>>> main
 
-function App() {
+// Pages
+import Employees from './pages/Employees';
+import Attendance from './pages/Attendance';
+import Leaves from './pages/Leaves';
+import Departments from './pages/Departments';
+import Jobs from './pages/Jobs';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+
+const App = () => {
   return (
-    <LeaveProvider>
-      <BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={isLoggedIn ? <Overview /> : <Navigate to="/" />} />
-          <Route path="/overview" element={<Overview />} />
-          <Route path="/onboard" element={<Onboard />} />
-          <Route path="/people" element={<People />} />
-          <Route path="/attendance" element={<Attendance />} />
-          <Route path="/timeOff" element={<TimeOff />} />
+          {/* Public routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-          {/* Settings */}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/leaveSettings" element={<LeaveSettings />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/inOutTime" element={<InOutTime />} />
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<MainLayout />}>
+              <Route index element={<Navigate to="employees" replace />} />
+              <Route path="employees" element={<Employees />} />
+              <Route path="attendance" element={<Attendance />} />
+              <Route path="leaves" element={<Leaves />} />
+              <Route path="departments" element={<Departments />} />
+              <Route path="jobs" element={<Jobs />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+          </Route>
 
-          {/* RM Employee Dashboard */}
-          <Route path="/rmdashboard" element={<Dashboard />} />
+          {/* Redirect root to login */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
 
-          {/*Employee Dashboard*/}
-          <Route path='/employeedashboard' element={<EmployeeDashboard/>}/>
-
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/request-leave" element={<LeaveRequestPage />} />
+          {/* Catch all route */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-      </BrowserRouter>
-    </LeaveProvider>
+      </Router>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
