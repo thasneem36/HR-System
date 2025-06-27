@@ -1,0 +1,112 @@
+:root {
+  --main-color: #941936;
+  --main-color-light: #fbe9ec;
+  --bg-white: #ffffff;
+  --border-color: #e2e8f0;
+  --text-muted: #6c757d;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+}
+
+/* Adjust container to account for fixed sidebar + navbar */
+.container-fluid {
+  margin-left: 250px;
+  margin-top: 80px;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+}
+
+/* Header */
+h1 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: var(--main-color);
+}
+
+button.btn {
+  background-color: var(--main-color);
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+button.btn:hover {
+  background-color: #7c1530;
+}
+
+/* Input + Select Filter Fields */
+.position-relative input.form-control,
+.position-relative select.form-select {
+  padding-left: 2.5rem;
+  height: 44px;
+  font-size: 0.95rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+}
+
+.position-relative svg {
+  color: var(--text-muted);
+}
+
+/* Table Styling */
+.table-responsive {
+  border-radius: 8px;
+  box-shadow: 0 4px 10px var(--shadow-light);
+  background-color: var(--bg-white);
+}
+
+table.table {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+table thead th {
+  background-color: var(--main-color-light);
+  color: var(--main-color);
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+}
+
+table tbody td {
+  border: 1px solid var(--border-color);
+  padding: 12px;
+}
+
+/* Badge Styling */
+.badge {
+  font-size: 0.75rem;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+
+/* Empty state */
+.table tbody td.text-muted {
+  font-style: italic;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .container-fluid {
+    margin-left: 0;
+    margin-top: 100px;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .d-flex.gap-2 {
+    flex-direction: column;
+    gap: 0.5rem !important;
+  }
+
+  .row.g-3 .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+}

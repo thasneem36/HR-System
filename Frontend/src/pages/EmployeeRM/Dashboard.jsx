@@ -55,7 +55,9 @@ function Dashboard() {
         <div className="top-bar-right">
           <div className="notifications-icon" onClick={() => setShowNotifications(true)}>
             <i className="fas fa-bell"></i>
-            <span className="notification-badge">3</span>
+            {notifications.length > 0 && (
+              <span className="notification-badge">{notifications.length}</span>
+            )}
           </div>
           <div className="profile-section" onClick={() => setActiveComponent('profile')}>
             <i className="fas fa-user-circle"></i>
@@ -66,8 +68,6 @@ function Dashboard() {
           </button>
         </div>
       </div>
-      
-      
 
       <hr className="divider" />
 
@@ -78,7 +78,7 @@ function Dashboard() {
         </div>
       )}
 
-      {/* Profile Section */}
+      {/* Profile Info */}
       <div className="profile-info">
         <div className="profile-details">
           <p><strong>ID:</strong> 123456</p>
@@ -90,9 +90,9 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Leave Summary */}
-      <div className="leave-summary">
-        <button 
+      {/* Leave Summary & Request Button */}
+      <div className="summary-container">
+        <button
           className="request-leave-button"
           onClick={() => setActiveComponent('requestLeave')}
         >
@@ -100,11 +100,12 @@ function Dashboard() {
         </button>
 
         <div className="stats-container">
-          {[['total leaves', leaveStats.total],
+          {[
+            ['Total Leaves', leaveStats.total],
             ['Balance', leaveStats.balance],
             ['Accepted', leaveStats.accepted],
             ['Rejected', leaveStats.rejected],
-            ['pending', leaveStats.pending]
+            ['Pending', leaveStats.pending]
           ].map(([label, value]) => (
             <div key={label} className="stat-card">
               <p className="stat-label">{label}</p>
@@ -130,31 +131,33 @@ function Dashboard() {
             </tr>
           </thead>
           <tbody>
-            {leaveRequests && leaveRequests.length > 0
-              ? leaveRequests.sort((a, b) => new Date(b.startDate) - new Date(a.startDate)).map((row, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{row.name}</td>
-                  <td>{row.startDate}</td>
-                  <td>{row.endDate}</td>
-                  <td>{row.leaveType}</td>
-                  <td>
-                    {Math.ceil(
-                      (new Date(row.endDate) - new Date(row.startDate)) /
-                      (1000 * 60 * 60 * 24)
-                    ) + 1}
-                  </td>
-                  <td>
-                    <span className={`status ${row.reportingManagerStatus?.toLowerCase() || 'pending'}`}>
-                      {row.reportingManagerStatus || 'Pending'}
-                    </span>
-                  </td>
-                </tr>
-              )) : (
-                <tr>
-                  <td colSpan="7" className="no-data">No recent leave requests</td>
-                </tr>
-              )}
+            {leaveRequests && leaveRequests.length > 0 ? (
+              leaveRequests
+                .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
+                .map((row, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{row.name}</td>
+                    <td>{row.startDate}</td>
+                    <td>{row.endDate}</td>
+                    <td>{row.leaveType}</td>
+                    <td>
+                      {Math.ceil(
+                        (new Date(row.endDate) - new Date(row.startDate)) / (1000 * 60 * 60 * 24)
+                      ) + 1}
+                    </td>
+                    <td>
+                      <span className={`status ${row.reportingManagerStatus?.toLowerCase() || 'pending'}`}>
+                        {row.reportingManagerStatus || 'Pending'}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="no-data">No recent leave requests</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -169,7 +172,7 @@ function Dashboard() {
         </button>
       </div>
 
-      {/* Conditional Components */}
+      {/* Modals for Forms & Pages */}
       <div className="modal-container">
         {activeComponent === 'requestLeave' && (
           <div className="modal-overlay">
@@ -178,10 +181,17 @@ function Dashboard() {
             </div>
           </div>
         )}
+
         {activeComponent === 'viewLeaveRequests' && (
-          <LeaveRequestsPage leaveRequests={[]} onClose={() => setActiveComponent(null)} />
+          <LeaveRequestsPage
+            leaveRequests={leaveRequests}
+            onClose={() => setActiveComponent(null)}
+          />
         )}
-        <Profile open={activeComponent === 'profile'} onClose={() => setActiveComponent(null)} />
+
+        {activeComponent === 'profile' && (
+          <Profile open={true} onClose={() => setActiveComponent(null)} />
+        )}
       </div>
 
       {/* Notification Modal */}
@@ -199,7 +209,7 @@ function Dashboard() {
                 </div>
               ))
             )}
-            <button 
+            <button
               className="close-button"
               onClick={() => setShowNotifications(false)}
             >

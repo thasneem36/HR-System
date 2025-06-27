@@ -1,14 +1,32 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import theme from './theme';
+// <<<<<<< Athnan
+// import React from 'react';
+// import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// import { ThemeProvider } from '@mui/material';
+// import CssBaseline from '@mui/material/CssBaseline';
+// import theme from './theme';
 
-// Components
-import MainLayout from './components/Layout/MainLayout';
-import Login from './Login/Login';
-import Register from './components/Auth/Register';
-import ProtectedRoute from './components/Auth/ProtectedRoute';
+// // Components
+// import MainLayout from './components/Layout/MainLayout';
+// import Login from './Login/Login';
+// import Register from './components/Auth/Register';
+// import ProtectedRoute from './components/Auth/ProtectedRoute';
+// =======
+// import './App.css'
+// import AdminNav from './navbars/AdminNav'
+// import Onboard from './pages/Admin/Manage/Onboard'
+// import People from './pages/Admin/Manage/People'
+// import Overview from './pages/Admin/Overview'
+// import Attendance from './pages/Admin/Manage/Attendance'
+// import TimeOff from './pages/Admin/Manage/TimeOff'
+// import { Navigate } from "react-router-dom";
+// import { BrowserRouter, Route, Routes } from 'react-router-dom'
+// import Profile from './pages/Admin/Settings/Profile'
+// import LeaveSettings from './pages/Admin/Settings/LeaveSettings'
+// import Calendar from './pages/Admin/Settings/Calendar'
+// import InOutTime from './pages/Admin/Settings/InOutTime'
+// import Login from './Login/Login'
+// import LeaveRequestForm from './components/EmployeeRM/LeaveRequestForm'
+// >>>>>>> main
 
 // Pages
 import Employees from './pages/Employees';
