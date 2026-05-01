@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\HrFeedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Traits\ApiResponse;
@@ -60,11 +61,17 @@ class EmployeeController extends Controller
         ]);
 
         $employee = Employee::create($validated);
+        $employee->load(['department', 'job', 'employeeType']);
 
-        return $this->created(
-            $employee->load(['department', 'job', 'employeeType']),
-            'Employee created successfully'
-        );
+        try {
+            broadcast(new HrFeedEvent('employee.updated', [
+                'action'      => 'created',
+                'employee_id' => $employee->id,
+                'name'        => $employee->full_name,
+            ]));
+        } catch (\Throwable) {}
+
+        return $this->created($employee, 'Employee created successfully');
     }
 
     public function show(Employee $employee)
@@ -97,6 +104,14 @@ class EmployeeController extends Controller
 
         $employee->update($validated);
 
+        try {
+            broadcast(new HrFeedEvent('employee.updated', [
+                'action'      => 'updated',
+                'employee_id' => $employee->id,
+                'name'        => $employee->full_name,
+            ]));
+        } catch (\Throwable) {}
+
         return $this->success(
             $employee->load(['department', 'job', 'employeeType']),
             'Employee updated successfully'
@@ -105,7 +120,18 @@ class EmployeeController extends Controller
 
     public function destroy(Employee $employee)
     {
+        $id   = $employee->id;
+        $name = $employee->full_name;
         $employee->delete();
+
+        try {
+            broadcast(new HrFeedEvent('employee.updated', [
+                'action'      => 'deleted',
+                'employee_id' => $id,
+                'name'        => $name,
+            ]));
+        } catch (\Throwable) {}
+
         return $this->success(null, 'Employee deleted successfully');
     }
 

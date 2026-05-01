@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\HrFeedEvent;
+use App\Events\UserFeedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Employee;
+use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
@@ -47,6 +50,14 @@ class AttendanceController extends Controller
             $validated
         );
 
+        try {
+            broadcast(new HrFeedEvent('attendance.updated', [
+                'employee_id' => $attendance->employee_id,
+                'date'        => $attendance->date,
+                'status'      => $attendance->status,
+            ]));
+        } catch (\Throwable) {}
+
         return $this->created($attendance->load('employee'), 'Attendance recorded');
     }
 
@@ -65,6 +76,15 @@ class AttendanceController extends Controller
         ]);
 
         $attendance->update($validated);
+
+        try {
+            broadcast(new HrFeedEvent('attendance.updated', [
+                'employee_id' => $attendance->employee_id,
+                'date'        => $attendance->date,
+                'status'      => $attendance->status,
+            ]));
+        } catch (\Throwable) {}
+
         return $this->success($attendance, 'Attendance updated');
     }
 
@@ -83,6 +103,22 @@ class AttendanceController extends Controller
             ['check_in' => now()->format('H:i'), 'status' => 'present']
         );
 
+        try {
+            broadcast(new HrFeedEvent('attendance.updated', [
+                'employee_id' => $attendance->employee_id,
+                'date'        => $attendance->date,
+                'status'      => 'present',
+                'event'       => 'check_in',
+            ]));
+            $empUser = User::where('employee_id', $request->employee_id)->first();
+            if ($empUser) {
+                broadcast(new UserFeedEvent($empUser->id, 'attendance.updated', [
+                    'date'   => $attendance->date,
+                    'status' => 'present',
+                ]));
+            }
+        } catch (\Throwable) {}
+
         return $this->success($attendance, 'Checked in successfully');
     }
 
@@ -99,6 +135,22 @@ class AttendanceController extends Controller
         }
 
         $attendance->update(['check_out' => now()->format('H:i')]);
+
+        try {
+            broadcast(new HrFeedEvent('attendance.updated', [
+                'employee_id' => $attendance->employee_id,
+                'date'        => $attendance->date,
+                'event'       => 'check_out',
+            ]));
+            $empUser = User::where('employee_id', $request->employee_id)->first();
+            if ($empUser) {
+                broadcast(new UserFeedEvent($empUser->id, 'attendance.updated', [
+                    'date'  => $attendance->date,
+                    'event' => 'check_out',
+                ]));
+            }
+        } catch (\Throwable) {}
+
         return $this->success($attendance, 'Checked out successfully');
     }
 

@@ -19,9 +19,13 @@ import {
   Settings as SettingsIcon,
   AccountCircle as AccountCircleIcon,
   ExitToApp as LogoutIcon,
+  AccountBalance as PayrollIcon,
+  History as AuditIcon,
+  Folder as DocumentsIcon,
 } from '@mui/icons-material';
 import { logout, selectCurrentUser, selectIsHR } from '../../store/authSlice';
 import { authAPI } from '../../services/api';
+import NotificationBell from '../NotificationBell';
 
 const DRAWER_WIDTH = 240;
 const BRAND_COLOR  = '#941936';
@@ -31,6 +35,7 @@ const baseMenuItems = [
   { text: 'Dashboard',  icon: <DashboardIcon />,      path: '/dashboard' },
   { text: 'Attendance', icon: <EventNoteIcon />,       path: '/attendance' },
   { text: 'Leaves',     icon: <CalendarTodayIcon />,   path: '/leaves' },
+  { text: 'Documents',  icon: <DocumentsIcon />,       path: '/documents' },
 ];
 
 // Menu items visible only to HR Manager and Super Admin
@@ -38,7 +43,9 @@ const hrMenuItems = [
   { text: 'Employees',   icon: <PeopleIcon />,    path: '/employees' },
   { text: 'Departments', icon: <BusinessIcon />,  path: '/departments' },
   { text: 'Jobs',        icon: <WorkIcon />,      path: '/jobs' },
+  { text: 'Payroll',     icon: <PayrollIcon />,   path: '/payroll' },
   { text: 'Reports',     icon: <ReportsIcon />,   path: '/reports' },
+  { text: 'Audit Log',   icon: <AuditIcon />,     path: '/audit-log' },
   { text: 'Settings',    icon: <SettingsIcon />,  path: '/settings' },
 ];
 
@@ -141,6 +148,8 @@ const MainLayout = () => {
           </IconButton>
 
           <Typography variant="h6" fontWeight={600} flexGrow={1}>{currentPage}</Typography>
+
+          <NotificationBell />
 
           {/* User menu */}
           <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>

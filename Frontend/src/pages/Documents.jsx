@@ -14,6 +14,9 @@ import {
 } from '@mui/icons-material';
 import { documentAPI, employeeAPI } from '../services/api';
 import { selectCurrentUser, selectIsHR } from '../store/authSlice';
+import { useHrFeed } from '../hooks/useHrFeed';
+import { useUserFeed } from '../hooks/useUserFeed';
+import { usePolling } from '../hooks/usePolling';
 
 const BRAND = '#941936';
 
@@ -211,6 +214,11 @@ const Documents = () => {
   }, [selectedEmp, catFilter, expiryFilter]);
 
   useEffect(() => { fetchDocs(); }, [fetchDocs]);
+
+  // Real-time: refresh when a document is uploaded/deleted for the selected employee
+  useHrFeed({ 'document.updated': fetchDocs });
+  useUserFeed({ 'document.updated': fetchDocs });
+  usePolling(fetchDocs, 60000);
 
   const handleDownload = async (doc) => {
     try {

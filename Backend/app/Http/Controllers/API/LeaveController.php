@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\HrFeedEvent;
+use App\Events\UserFeedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Leave;
 use App\Models\LeaveBalance;
 use App\Models\LeaveStatus;
+use App\Models\Notification;
+use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 
@@ -55,11 +59,20 @@ class LeaveController extends Controller
         }
 
         $leave = Leave::create($validated);
+        $leave->load(['employee', 'leaveType', 'leaveStatus']);
 
-        return $this->created(
-            $leave->load(['employee', 'leaveType', 'leaveStatus']),
-            'Leave request submitted successfully'
-        );
+        try {
+            broadcast(new HrFeedEvent('leave.requested', [
+                'leave_id'      => $leave->id,
+                'employee_name' => $leave->employee->full_name ?? 'Employee',
+                'leave_type'    => $leave->leaveType->name ?? '',
+                'start_date'    => $leave->start_date,
+                'end_date'      => $leave->end_date,
+                'total_days'    => $leave->total_days,
+            ]));
+        } catch (\Throwable) {}
+
+        return $this->created($leave, 'Leave request submitted successfully');
     }
 
     public function show(Leave $leave)
@@ -113,7 +126,27 @@ class LeaveController extends Controller
             ->where('year', $leave->start_date->year)
             ->increment('used_days', $leave->total_days);
 
-        return $this->success($leave->load(['leaveType', 'leaveStatus']), 'Leave approved');
+        $leave->load(['leaveType', 'leaveStatus', 'employee']);
+
+        try {
+            $employeeUser = User::where('employee_id', $leave->employee_id)->first();
+            if ($employeeUser) {
+                $notif = Notification::create([
+                    'user_id' => $employeeUser->id,
+                    'title'   => '✅ Leave Approved',
+                    'message' => "Your {$leave->leaveType->name} leave from {$leave->start_date->format('d M')} to {$leave->end_date->format('d M Y')} has been approved.",
+                    'type'    => 'success',
+                ]);
+                broadcast(new \App\Events\NotificationSent($notif));
+                broadcast(new UserFeedEvent($employeeUser->id, 'leave.status.updated', [
+                    'leave_id' => $leave->id,
+                    'status'   => 'Approved',
+                ]));
+            }
+            broadcast(new HrFeedEvent('leave.updated', ['leave_id' => $leave->id, 'status' => 'Approved']));
+        } catch (\Throwable) {}
+
+        return $this->success($leave, 'Leave approved');
     }
 
     public function reject(Request $request, Leave $leave)
@@ -132,7 +165,27 @@ class LeaveController extends Controller
             'approved_by'      => $request->user()->employee_id,
         ]);
 
-        return $this->success($leave->load(['leaveType', 'leaveStatus']), 'Leave rejected');
+        $leave->load(['leaveType', 'leaveStatus', 'employee']);
+
+        try {
+            $employeeUser = User::where('employee_id', $leave->employee_id)->first();
+            if ($employeeUser) {
+                $notif = Notification::create([
+                    'user_id' => $employeeUser->id,
+                    'title'   => '❌ Leave Rejected',
+                    'message' => "Your {$leave->leaveType->name} leave request has been rejected.",
+                    'type'    => 'error',
+                ]);
+                broadcast(new \App\Events\NotificationSent($notif));
+                broadcast(new UserFeedEvent($employeeUser->id, 'leave.status.updated', [
+                    'leave_id' => $leave->id,
+                    'status'   => 'Rejected',
+                ]));
+            }
+            broadcast(new HrFeedEvent('leave.updated', ['leave_id' => $leave->id, 'status' => 'Rejected']));
+        } catch (\Throwable) {}
+
+        return $this->success($leave, 'Leave rejected');
     }
 
     public function pending()

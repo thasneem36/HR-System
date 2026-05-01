@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box, Card, CardContent, Chip, CircularProgress,
@@ -18,6 +18,9 @@ import {
 } from 'recharts';
 import { dashboardAPI, leaveAPI } from '../services/api';
 import { selectCurrentUser } from '../store/authSlice';
+import { useHrFeed } from '../hooks/useHrFeed';
+import { useUserFeed } from '../hooks/useUserFeed';
+import { usePolling } from '../hooks/usePolling';
 
 const BRAND = '#941936';
 const COLORS = ['#941936', '#1565c0', '#2e7d32', '#e65100', '#6a1b9a', '#00838f'];
@@ -49,16 +52,15 @@ const Dashboard = () => {
   const [deptChart, setDeptChart]   = useState([]);
   const [loading, setLoading]       = useState(true);
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const [statsRes, pendingRes, attRes, leaveRes, empRes] = await Promise.all([
-          dashboardAPI.stats(),
-          leaveAPI.pending(),
-          dashboardAPI.attendanceSummary(),
-          dashboardAPI.leaveSummary(),
-          dashboardAPI.employeeSummary(),
-        ]);
+  const load = useCallback(async () => {
+    try {
+      const [statsRes, pendingRes, attRes, leaveRes, empRes] = await Promise.all([
+        dashboardAPI.stats(),
+        leaveAPI.pending(),
+        dashboardAPI.attendanceSummary(),
+        dashboardAPI.leaveSummary(),
+        dashboardAPI.employeeSummary(),
+      ]);
 
         setStats(statsRes.data);
         setPending(pendingRes.data?.slice(0, 5) ?? []);
@@ -86,9 +88,27 @@ const Dashboard = () => {
         );
       } catch (_) {}
       finally { setLoading(false); }
-    };
-    load();
+    }
   }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  // Real-time: any HR-feed event refreshes dashboard stats
+  useHrFeed({
+    'leave.requested':  load,
+    'leave.updated':    load,
+    'employee.updated': load,
+    'attendance.updated': load,
+    'payroll.updated':  load,
+  });
+
+  // Real-time: employee's own leave status changes refresh their view
+  useUserFeed({
+    'leave.status.updated': load,
+  });
+
+  // Polling fallback every 30 s
+  usePolling(load, 30000);
 
   if (loading) return (
     <Box>

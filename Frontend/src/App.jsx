@@ -19,6 +19,9 @@ import Profile from './pages/Profile';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
+import Payroll from './pages/Payroll';
+import AuditLog from './pages/AuditLog';
+import Documents from './pages/Documents';
 
 const App = () => {
   return (
@@ -46,7 +49,12 @@ const App = () => {
                 <Route path="jobs"        element={<Jobs />} />
                 <Route path="reports"     element={<Reports />} />
                 <Route path="settings"    element={<Settings />} />
+                <Route path="payroll"     element={<Payroll />} />
+                <Route path="audit-log"   element={<AuditLog />} />
               </Route>
+
+              {/* All authenticated users */}
+              <Route path="documents" element={<Documents />} />
             </Route>
           </Route>
 

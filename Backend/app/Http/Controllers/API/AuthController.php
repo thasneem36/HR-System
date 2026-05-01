@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\HrFeedEvent;
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\Employee;
 use App\Models\User;
 use App\Traits\ApiResponse;
@@ -64,6 +66,21 @@ class AuthController extends Controller
         }
 
         $user->update(['password' => Hash::make($request->new_password)]);
+
+        AuditLog::record(
+            $user->id, 'auth.password_changed',
+            "{$user->name} changed their password",
+            'User', $user->id
+        );
+
+        try {
+            broadcast(new HrFeedEvent('password.changed', [
+                'user_id' => $user->id,
+                'name'    => $user->name,
+                'email'   => $user->email,
+            ]));
+        } catch (\Throwable) {}
+
         return $this->success(null, 'Password changed successfully');
     }
 }

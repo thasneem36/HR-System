@@ -9,6 +9,9 @@ import {
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon, LoginOutlined, LogoutOutlined } from '@mui/icons-material';
 import { attendanceAPI, lookupAPI } from '../services/api';
 import { selectCurrentUser, selectIsHR } from '../store/authSlice';
+import { useHrFeed } from '../hooks/useHrFeed';
+import { useUserFeed } from '../hooks/useUserFeed';
+import { usePolling } from '../hooks/usePolling';
 
 const STATUS_COLOR = { present: 'success', absent: 'error', late: 'warning', half_day: 'info' };
 
@@ -122,6 +125,11 @@ const Attendance = () => {
 
   useEffect(() => { fetchEmployees(); }, [fetchEmployees]);
   useEffect(() => { fetchAttendance(); }, [fetchAttendance]);
+
+  // Real-time: HR sees all check-ins live; employee sees own updates
+  useHrFeed({ 'attendance.updated': fetchAttendance });
+  useUserFeed({ 'attendance.updated': fetchAttendance });
+  usePolling(fetchAttendance, 30000);
 
   // Fetch actual employees for dropdown (not departments)
   const [empList, setEmpList] = useState([]);

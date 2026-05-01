@@ -143,4 +143,47 @@ export const holidayAPI = {
   upcoming:  ()       => api.get('/holidays/upcoming'),
 };
 
+// ─── Payroll ─────────────────────────────────────────────────────────────────
+export const payrollAPI = {
+  getAll:       (params)    => api.get('/payroll', { params }),
+  getById:      (id)        => api.get(`/payroll/${id}`),
+  create:       (data)      => api.post('/payroll', data),
+  update:       (id, data)  => api.put(`/payroll/${id}`, data),
+  delete:       (id)        => api.delete(`/payroll/${id}`),
+  approve:      (id)        => api.post(`/payroll/${id}/approve`),
+  markPaid:     (id)        => api.post(`/payroll/${id}/paid`),
+  generate:     (data)      => api.post('/payroll/generate', data),
+  summary:      (params)    => api.get('/payroll/summary', { params }),
+  myPayslips:   ()          => api.get('/payroll/my-payslips'),
+};
+
+// ─── Notifications ───────────────────────────────────────────────────────────
+export const notificationAPI = {
+  getAll:      ()      => api.get('/notifications'),
+  unreadCount: ()      => api.get('/notifications/unread-count'),
+  send:        (data)  => api.post('/notifications', data),
+  markRead:    (id)    => api.patch(`/notifications/${id}/read`),
+  markAllRead: ()      => api.patch('/notifications/read-all'),
+  delete:      (id)    => api.delete(`/notifications/${id}`),
+};
+
+// ─── Documents ───────────────────────────────────────────────────────────────
+export const documentAPI = {
+  list:      (employeeId, params) => api.get(`/employees/${employeeId}/documents`, { params }),
+  getAll:    (employeeId, params) => api.get(`/employees/${employeeId}/documents`, { params }),
+  upload:    (employeeId, data, onProgress) => api.post(`/employees/${employeeId}/documents`, data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    onUploadProgress: onProgress ? (e) => onProgress(Math.round((e.loaded * 100) / e.total)) : undefined,
+  }),
+  download:  (docId)              => api.get(`/documents/${docId}/download`, { responseType: 'blob' }),
+  update:    (docId, data)        => api.put(`/documents/${docId}`, data),
+  delete:    (docId)              => api.delete(`/documents/${docId}`),
+  sendExpiryAlerts: (params)      => api.post('/documents/expiry-alerts', {}, { params }),
+};
+
+// ─── Audit Log ───────────────────────────────────────────────────────────────
+export const auditAPI = {
+  getAll: (params) => api.get('/audit-logs', { params }),
+};
+
 export default api;

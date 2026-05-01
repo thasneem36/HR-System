@@ -6,6 +6,7 @@ import {
   TextField, Typography, Alert,
 } from '@mui/material';
 import { authAPI } from '../services/api';
+import { updateEchoToken } from '../services/echo';
 import { setCredentials } from '../store/authSlice';
 
 const Login = () => {
@@ -28,6 +29,7 @@ const Login = () => {
       const { token, user } = res.data;
 
       dispatch(setCredentials({ token, user }));
+      updateEchoToken(token);
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid email or password');

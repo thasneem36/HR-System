@@ -13,6 +13,8 @@ import {
 } from '@mui/icons-material';
 import { employeeAPI, lookupAPI } from '../services/api';
 import { selectIsHR } from '../store/authSlice';
+import { useHrFeed } from '../hooks/useHrFeed';
+import { usePolling } from '../hooks/usePolling';
 
 const EMPTY_FORM = {
   first_name: '', last_name: '', email: '', phone: '', nic: '',
@@ -188,6 +190,10 @@ const Employees = () => {
 
   useEffect(() => { fetchRefs(); }, [fetchRefs]);
   useEffect(() => { fetchEmployees(); }, [fetchEmployees]);
+
+  // Real-time: refresh list when any employee is created/updated/deleted
+  useHrFeed({ 'employee.updated': fetchEmployees });
+  usePolling(fetchEmployees, 30000);
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this employee?')) return;

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\HrFeedEvent;
+use App\Events\UserFeedEvent;
 use App\Http\Controllers\Controller;
 use App\Mail\DocumentExpiryMail;
 use App\Models\AuditLog;
 use App\Models\Employee;
 use App\Models\EmployeeDocument;
+use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -82,6 +85,21 @@ class DocumentController extends Controller
             "Uploaded document '{$document->title}' for {$employee->full_name}",
             'EmployeeDocument', $document->id
         );
+
+        try {
+            broadcast(new HrFeedEvent('document.updated', [
+                'action'      => 'uploaded',
+                'employee_id' => $employee->id,
+                'title'       => $document->title,
+            ]));
+            $empUser = User::where('employee_id', $employee->id)->first();
+            if ($empUser) {
+                broadcast(new UserFeedEvent($empUser->id, 'document.updated', [
+                    'action' => 'uploaded',
+                    'title'  => $document->title,
+                ]));
+            }
+        } catch (\Throwable) {}
 
         return $this->created(
             $document->load('uploadedBy'),

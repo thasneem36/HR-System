@@ -11,6 +11,10 @@ use App\Http\Controllers\API\JobController;
 use App\Http\Controllers\API\HolidayController;
 use App\Http\Controllers\API\LookupController;
 use App\Http\Controllers\API\LeaveTypeController;
+use App\Http\Controllers\API\AuditLogController;
+use App\Http\Controllers\API\PayrollController;
+use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\DocumentController;
 
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -112,5 +116,44 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('holidays', [HolidayController::class, 'store']);
         Route::put('holidays/{holiday}', [HolidayController::class, 'update']);
         Route::delete('holidays/{holiday}', [HolidayController::class, 'destroy']);
+    });
+
+    // Payroll — HR/Admin manage; employees view own payslips
+    Route::get('payroll/my-payslips', [PayrollController::class, 'myPayslips']);
+    Route::get('payroll/summary',     [PayrollController::class, 'summary']);
+    Route::middleware('role:super_admin,hr_manager')->group(function () {
+        Route::post('payroll/generate',          [PayrollController::class, 'generate']);
+        Route::post('payroll/{payroll}/approve', [PayrollController::class, 'approve']);
+        Route::post('payroll/{payroll}/paid',    [PayrollController::class, 'markPaid']);
+        Route::get('payroll',                    [PayrollController::class, 'index']);
+        Route::post('payroll',                   [PayrollController::class, 'store']);
+        Route::put('payroll/{payroll}',          [PayrollController::class, 'update']);
+        Route::delete('payroll/{payroll}',       [PayrollController::class, 'destroy']);
+    });
+    Route::get('payroll/{payroll}', [PayrollController::class, 'show']);
+
+    // Notifications — all users manage their own
+    Route::get('notifications',              [NotificationController::class, 'index']);
+    Route::get('notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::patch('notifications/read-all',   [NotificationController::class, 'markAllRead']);
+    Route::patch('notifications/{id}/read',  [NotificationController::class, 'markRead']);
+    Route::delete('notifications/{id}',      [NotificationController::class, 'destroy']);
+    Route::middleware('role:super_admin,hr_manager')->group(function () {
+        Route::post('notifications', [NotificationController::class, 'store']);
+    });
+
+    // Documents — per-employee; employees view/upload own; HR manages all
+    Route::get('employees/{employee}/documents',              [DocumentController::class, 'index']);
+    Route::post('employees/{employee}/documents',             [DocumentController::class, 'store']);
+    Route::get('documents/{document}/download',              [DocumentController::class, 'download']);
+    Route::middleware('role:super_admin,hr_manager')->group(function () {
+        Route::put('documents/{document}',                   [DocumentController::class, 'update']);
+        Route::delete('documents/{document}',                [DocumentController::class, 'destroy']);
+        Route::post('documents/expiry-alerts',               [DocumentController::class, 'sendExpiryAlerts']);
+    });
+
+    // Audit Log — HR/Admin only
+    Route::middleware('role:super_admin,hr_manager')->group(function () {
+        Route::get('audit-logs', [AuditLogController::class, 'index']);
     });
 });
