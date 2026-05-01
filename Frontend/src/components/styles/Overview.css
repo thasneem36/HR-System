@@ -1,0 +1,76 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.container-width{
+    width: 80%;
+}
+.card-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.card{
+    display: flex;
+    padding: 20px 50px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.058);
+    align-items: center;
+    border-radius: 10px;
+}
+
+.card .text p{
+    font-size: 15px;
+}
+.card .text h1{
+    font-size: 35px;
+}
+
+.card .icon{
+    margin-left: 10px;
+    font-size: 50px;
+    color: var(--main-color);
+}
+
+.box{
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 30px;
+    /* padding: 10px; */
+    margin-bottom: 20px;
+}
+.statistic{
+    padding: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.058);
+}
+.leaveApplication{
+    padding: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.058);
+    font-family: var(--front-primary);
+}
+
+.user{
+    /* border: 1px solid; */
+    margin-top: 30px;
+}
+.user-card{
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+}
+.user-card .icon-u{
+    font-size: 30px;
+}
+.user-card .text{
+    margin-left: 10px;
+}
+.user-card .action{
+    background-color: rgb(255, 82, 82);
+    padding: 4px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+}

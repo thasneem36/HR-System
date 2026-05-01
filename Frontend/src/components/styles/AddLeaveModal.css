@@ -1,0 +1,109 @@
+/* Add Leave Modal Styles */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+  
+  .modal-container {
+    background-color: white;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 28rem; /* max-w-md */
+    padding: 1.5rem;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937; /* text-gray-800 */
+  }
+  
+  .close-button {
+    color: #6b7280; /* text-gray-500 */
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    color: #374151; /* text-gray-700 */
+  }
+  
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151; /* text-gray-700 */
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db; /* border-gray-300 */
+    border-radius: 0.5rem;
+    outline: none;
+  }
+  
+  .form-input:focus {
+    border-color: #3b82f6; /* blue-500 */
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  
+  .cancel-button {
+    padding: 0.5rem 1rem;
+    color: #374151; /* text-gray-700 */
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  .cancel-button:hover {
+    background-color: #f9fafb; /* hover:bg-gray-50 */
+  }
+  
+  .submit-button {
+    padding: 0.5rem 1rem;
+    background-color: #2563eb; /* bg-blue-600 */
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #1d4ed8; /* hover:bg-blue-700 */
+  }
+  
